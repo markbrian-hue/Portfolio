@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Brian Viloria | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-flex">
+            <a href="#" class="logo">MBV.</a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Work</a></li>
+                <li><a href="#contact" class="btn-nav">Let's Talk</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="container hero-flex">
+            <div class="hero-text fade-in-up">
+                <span class="tagline">Mark Brian Viloria</span>
+                <h1>Turning complex problems into <span class="highlight">elegant code.</span></h1>
+                <p>I am a developer passionate about building scalable web applications and smart IoT solutions.</p>
+                <div class="hero-btns">
+                    <a href="#projects" class="btn-primary">View My Work</a>
+                    <button class="btn-secondary" data-action="contact">Contact Me</button>
+                </div>
+            </div>
+            <div class="hero-image fade-in-up">
+                <img src="images/profile.png" alt="Mark Brian Viloria">
+            </div>
+        </div>
+    </header>
+
+    <section id="skills" class="section-light">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">My Tech Stack</h2>
+                <p>The tools I use to build robust products.</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="icon">⚛️</div>
+                    <h3>Frontend</h3>
+                    <p>React, JavaScript (ES6+), HTML5, CSS3, Tailwind</p>
+                </div>
+                <div class="skill-card">
+                    <div class="icon">⚙️</div>
+                    <h3>Backend</h3>
+                    <p>Node.js, SQL, API Integration, Server Management</p>
+                </div>
+                <div class="skill-card">
+                    <div class="icon">📡</div>
+                    <h3>IoT & Hardware</h3>
+                    <p>ESP32, Sensors, Automation Logic, Circuit Design</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section-white">
+        <div class="container">
+            <h2 class="section-title">Selected Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="images/pos.png" alt="Smart System Project" class="project-img">
+                    <div class="project-content">
+                        <h3>POS</h3>
+                        <p class="tech-tags">ASP.NET MVC • SQL</p>
+                        <p>A POS with Smart Inventory System and Data Analytics for better forecasting.</p>
+                        <button class="btn-view-details" data-project="pos">View Details →</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="images/celestia.png" alt="Web Application Project" class="project-img">
+                    <div class="project-content">
+                        <h3>Web Application</h3>
+                        <p class="tech-tags">React • Typescript • SQL</p>
+                        <p>A dynamic web platform featuring customer booking and user management.</p>
+                        <button class="btn-view-details" data-project="celestia">View Details →</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <img src="images/payment.png" alt="Payment Integration Project" class="project-img">
+                    <div class="project-content">
+                        <h3>Payment Integration</h3>
+                        <p class="tech-tags">API • PayMongo • Backend</p>
+                        <p>Secure payment processing implementation using PayMongo APIs.</p>
+                        <button class="btn-view-details" data-project="payment">View Details →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container center-text">
+            <h2>Ready to build something amazing?</h2>
+            <p>I'm currently available for freelance work and collaboration.</p>
+            <button class="btn-primary" data-action="contact">Get In Touch</button>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Mark Brian Viloria. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal">
+            <button class="modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-header">
+                <h2>Let's Connect</h2>
+                <p>Fill out the form below and I'll get back to you soon.</p>
+            </div>
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="from_name">Name</label>
+                    <input type="text" id="from_name" name="from_name" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="from_email">Email</label>
+                    <input type="email" id="from_email" name="from_email" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" required placeholder="Project inquiry">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" required placeholder="Tell me about your project..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary btn-submit">Send Message</button>
+            </form>
+            <div class="form-success" id="formSuccess">
+                <div class="success-icon">✓</div>
+                <h3>Message Sent!</h3>
+                <p>Thank you for reaching out. I'll respond within 24 hours.</p>
+            </div>
+            <div class="form-error" id="formError">
+                <div class="error-icon">✕</div>
+                <h3>Oops! Something went wrong</h3>
+                <p>Please try again or email me directly at markbrianv229@gmail.com</p>
+                <button class="btn-secondary" id="retryBtn">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Details Modal -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal modal-lg">
+            <button class="modal-close" aria-label="Close modal">&times;</button>
+            <div class="project-modal-content" id="projectModalContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
