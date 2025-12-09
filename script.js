@@ -235,6 +235,22 @@ const ProjectModal = {
             ],
             liveUrl: '',
             githubUrl: ''
+        },
+        qcu: {
+            title: 'QCU Food Hub',
+            image: 'images/foodhub.png',
+            tags: 'Vue • JavaScript • C#',
+            description: 'An entrepreneurship hub platform for students to browse ventures, manage listings, and connect with opportunities in the QCU community.',
+            features: [
+                'Venture browsing with categorized listings',
+                'Creator dashboards to add and manage opportunities',
+                'Authentication and role-based actions',
+                'Responsive UI for mobile and desktop',
+                'Real-time data powered by Supabase',
+                'Deployed on Vercel for fast global delivery'
+            ],
+            liveUrl: 'https://qcu-entrep-hub.vercel.app/',
+            githubUrl: ''
         }
     },
     
