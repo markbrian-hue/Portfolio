@@ -204,7 +204,7 @@ const ProjectModal = {
                 'Mobile-responsive design',
                 'Real-time availability updates'
             ],
-            liveUrl: '',
+            liveUrl: 'https://thecelestiahotel.vercel.app/',
             githubUrl: ''
         },
         payment: {
