@@ -175,6 +175,20 @@ const ContactModal = {
 /* Project Modal */
 const ProjectModal = {
     projects: {
+        cafeWeb: {
+            title: '91 Cafe Website',
+            image: 'images/91cafe.png', // Ensure you save a screenshot as 91cafe.png in your images folder
+            tags: 'Frontend • Web Design • Vercel',
+            description: 'A dedicated front-end promotional website built for 91 Cafe. Designed with a modern, sleek interface to showcase the café\'s offerings, enhance their digital footprint, and provide a seamless browsing experience for customers.',
+            features: [
+                'Modern, responsive, and mobile-first UI design',
+                'Optimized for fast page loading and smooth transitions',
+                'Engaging visual layout for product showcasing',
+                'Live deployment and scalable hosting on Vercel'
+            ],
+            liveUrl: 'https://91-cafe.vercel.app/',
+            githubUrl: ''
+        },
         pos: {
             title: 'POS System',
             image: 'images/pos.png',
