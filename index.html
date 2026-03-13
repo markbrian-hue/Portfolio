@@ -11,6 +11,10 @@
 </head>
 <body>
 
+    <canvas id="networkCanvas"></canvas>
+    <div class="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+
     <nav class="navbar">
         <div class="container nav-flex">
             <a href="#" class="logo">MBV.</a>
@@ -21,7 +25,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Work</a></li>
-                <li><a href="resume.html" target="_blank">Resume</a></li>
+                <li><a href="resume.html">Resume</a></li>
                 <li><button class="btn-nav" data-action="contact">Let's Talk</button></li>
             </ul>
         </div>
@@ -29,11 +33,11 @@
 
     <header id="home" class="hero fade-in">
         <div class="container hero-flex">
-            <div class="hero-image fade-in">
+            <div class="hero-image fade-in tilt-element">
                 <img src="images/profile.png" alt="Mark Brian Viloria" loading="lazy">
             </div>
             <div class="hero-text fade-in">
-                <span class="tagline">Full Stack Developer</span>
+                <span class="tagline" id="typewriter"></span>
                 <h1>Turning complex problems into <span class="highlight">elegant code.</span></h1>
                 <p>I am a student and aspiring developer passionate about creating dynamic websites, scalable web applications, and smart IoT solutions.</p>
                 <div class="social-links">
@@ -88,7 +92,16 @@
             </div>
             <div class="projects-grid">
                 
-                <!-- NEW PROJECT: 91 Cafe Website -->
+                <div class="project-card fade-in">
+                    <img src="images/thebespoke.png" alt="Luxury Travel Website" class="project-img" loading="lazy" onerror="this.style.display='none'">
+                    <div class="project-content">
+                        <h3>Luxury Travel Website</h3>
+                        <p class="tech-tags">Frontend • WordPress • Blog</p>
+                        <p>A premium web experience designed to showcase luxury travel destinations with immersive visuals and secure booking.</p>
+                        <button class="btn-view-details" data-project="luxuryTravel">View Case Study <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
                 <div class="project-card fade-in">
                     <img src="images/91cafe.png" alt="91 Cafe Website Interface" class="project-img" loading="lazy" onerror="this.style.display='none'">
                     <div class="project-content">
@@ -143,10 +156,9 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="contact-section fade-in">
         <div class="container contact-grid">
-            <div class="contact-info-card fade-in">
+            <div class="contact-info-card fade-in tilt-element">
                 <h2>Get In Touch</h2>
                 <p>Have a project in mind or want to collaborate? I'm always open to discussing new opportunities and tech solutions.</p>
                 <div class="contact-item">
@@ -177,7 +189,7 @@
                 </div>
             </div>
 
-            <div class="contact-form-card fade-in">
+            <div class="contact-form-card fade-in tilt-element">
                 <form id="contactFormBottom" class="contact-form">
                     <div class="form-group">
                         <label for="from_name_bottom">Name</label>
@@ -228,7 +240,6 @@
         </div>
     </footer>
 
-    <!-- Contact Modal -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal">
             <button class="modal-close" aria-label="Close modal">&times;</button>
@@ -269,7 +280,6 @@
         </div>
     </div>
 
-    <!-- Project Modal -->
     <div class="modal-overlay" id="projectModal">
         <div class="modal modal-lg">
             <button class="modal-close" aria-label="Close modal">&times;</button>

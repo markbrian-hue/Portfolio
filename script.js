@@ -1,16 +1,34 @@
 /**
- * Portfolio JavaScript
+ * Portfolio JavaScript - Advanced Interactive Version
  * Contact form sends emails to markbrianv229@gmail.com via FormSubmit.co
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Core Functionality
     MobileMenu.init();
     ContactModal.init();
     ProjectModal.init();
     SmoothScroll.init();
     FadeInOnScroll.init();
-    console.log('Portfolio loaded successfully.');
+    
+    // Level 1 Interactivity
+    InteractiveTyping.init();
+    // Removed old TiltEffect.init() here
+    
+    // Level 2 Advanced Interactivity
+    CanvasNetwork.init();
+    CustomCursor.init();
+    MagneticElements.init();
+    
+    // Level 3 God-Tier Interactivity
+    TextDecryption.init();
+    UpgradedTiltAndGlare.init(); // This replaces the old tilt!
+    ClickShockwave.init();
+    
+    console.log('Portfolio loaded successfully. Operating at maximum interactivity.');
 });
+
+/* --- CORE FUNCTIONALITY --- */
 
 /* Mobile Menu */
 const MobileMenu = {
@@ -175,9 +193,23 @@ const ContactModal = {
 /* Project Modal */
 const ProjectModal = {
     projects: {
+        luxuryTravel: {
+            title: 'Luxury Travel Website',
+            image: 'images/luxury-travel.png',
+            tags: 'Frontend • Custom Coding • WordPress/Wix',
+            description: 'A premium, highly interactive web experience designed for a freelance client to showcase luxury travel destinations. Built with an emphasis on high-end visuals, seamless user journeys, and secure booking functionalities.',
+            features: [
+                'High-end custom UI/UX design tailored for luxury clientele',
+                'Responsive image galleries for immersive destination viewing',
+                'Interactive and secure booking inquiry forms',
+                'Optimized performance for high-resolution visual assets'
+            ],
+            liveUrl: '',
+            githubUrl: ''
+        },
         cafeWeb: {
             title: '91 Cafe Website',
-            image: 'images/91cafe.png', // Ensure you save a screenshot as 91cafe.png in your images folder
+            image: 'images/91cafe.png', 
             tags: 'Frontend • Web Design • Vercel',
             description: 'A dedicated front-end promotional website built for 91 Cafe. Designed with a modern, sleek interface to showcase the café\'s offerings, enhance their digital footprint, and provide a seamless browsing experience for customers.',
             features: [
@@ -222,7 +254,7 @@ const ProjectModal = {
             githubUrl: ''
         },
         payment: {
-            title: 'Payment Integration',
+            title: 'Secure Pay Integration',
             image: 'images/payment.png',
             tags: 'API • PayMongo • Node.js • Backend',
             description: 'A secure payment processing implementation using PayMongo APIs. Handles various payment methods including credit cards, e-wallets, and bank transfers with PCI-compliant security measures and comprehensive transaction management.',
@@ -247,7 +279,7 @@ const ProjectModal = {
                 'Creator dashboards to add and manage opportunities',
                 'Authentication and role-based actions',
                 'Responsive UI for mobile and desktop',
-                'Real-time data powered by Supabase',
+                'Real-time data management',
                 'Search and filter functionalities'
             ],
             liveUrl: '',
@@ -299,8 +331,8 @@ const ProjectModal = {
     renderProject(project) {
         const featuresHTML = project.features.map(feature => `<li>${feature}</li>`).join('');
         let linksHTML = '';
-        if (project.liveUrl) linksHTML += `<a href="${project.liveUrl}" target="_blank" rel="noopener" class="btn-primary">View Live Site</a>`;
-        if (project.githubUrl) linksHTML += `<a href="${project.githubUrl}" target="_blank" rel="noopener" class="btn-secondary">View Source Code</a>`;
+        if (project.liveUrl) linksHTML += `<a href="${project.liveUrl}" target="_blank" rel="noopener" class="btn-primary magnetic">View Live Site</a>`;
+        if (project.githubUrl) linksHTML += `<a href="${project.githubUrl}" target="_blank" rel="noopener" class="btn-secondary magnetic">View Source Code</a>`;
         if (!project.liveUrl && !project.githubUrl) linksHTML = '<p style="color: var(--text-body); font-style: italic;">Project links coming soon...</p>';
 
         return `
@@ -352,5 +384,369 @@ const FadeInOnScroll = {
         }, { threshold: 0.2 });
 
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }
+};
+
+/* --- LEVEL 1 INTERACTIVITY --- */
+
+/* Interactive Typing Effect for Hero Section */
+const InteractiveTyping = {
+    init() {
+        this.element = document.querySelector('#typewriter'); 
+        if (!this.element || this.element.closest('.resume-sidebar')) return;
+
+        this.words = ['Full Stack Developer', 'IoT Enthusiast', 'UI/UX Designer'];
+        this.txt = '';
+        this.wordIndex = 0;
+        this.isDeleting = false;
+        
+        this.element.innerHTML = '<span class="text"></span><span class="typing-cursor"></span>';
+        this.textElement = this.element.querySelector('.text');
+        
+        this.type();
+    },
+    type() {
+        const current = this.wordIndex % this.words.length;
+        const fullTxt = this.words[current];
+
+        if (this.isDeleting) {
+            this.txt = fullTxt.substring(0, this.txt.length - 1);
+        } else {
+            this.txt = fullTxt.substring(0, this.txt.length + 1);
+        }
+
+        this.textElement.textContent = this.txt;
+
+        let typeSpeed = 100;
+        if (this.isDeleting) typeSpeed /= 2;
+
+        if (!this.isDeleting && this.txt === fullTxt) {
+            typeSpeed = 2000; 
+            this.isDeleting = true;
+        } else if (this.isDeleting && this.txt === '') {
+            this.isDeleting = false;
+            this.wordIndex++;
+            typeSpeed = 500; 
+        }
+
+        setTimeout(() => this.type(), typeSpeed);
+    }
+};
+
+/* 3D Tilt Effect for Cards on Mouse Move */
+const TiltEffect = {
+    init() {
+        const elements = document.querySelectorAll('.project-card, .skill-card, .tilt-element');
+        
+        if (window.matchMedia("(hover: hover)").matches) {
+            elements.forEach(el => {
+                el.addEventListener('mousemove', this.handleMove);
+                el.addEventListener('mouseleave', this.handleLeave);
+            });
+        }
+    },
+    handleMove(e) {
+        const el = this;
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -5; 
+        const rotateY = ((x - centerX) / centerX) * 5;
+        
+        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    },
+    handleLeave() {
+        this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+    }
+};
+
+/* --- LEVEL 2: ADVANCED AWWWARDS INTERACTIVITY --- */
+
+/* 1. Physics-based Node Network (Canvas) */
+const CanvasNetwork = {
+    init() {
+        this.canvas = document.getElementById('networkCanvas');
+        if (!this.canvas) return;
+        
+        this.ctx = this.canvas.getContext('2d');
+        this.particles = [];
+        this.mouse = { x: null, y: null, radius: 150 };
+        
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        
+        window.addEventListener('mousemove', (e) => {
+            this.mouse.x = e.x;
+            this.mouse.y = e.y;
+        });
+        
+        window.addEventListener('mouseout', () => {
+            this.mouse.x = null;
+            this.mouse.y = null;
+        });
+
+        this.createParticles();
+        this.animate();
+    },
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.createParticles();
+    },
+    createParticles() {
+        this.particles = [];
+        let numberOfParticles = (this.canvas.width * this.canvas.height) / 15000;
+        for (let i = 0; i < numberOfParticles; i++) {
+            let size = (Math.random() * 2) + 1;
+            let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+            let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+            let directionX = (Math.random() * 1) - 0.5;
+            let directionY = (Math.random() * 1) - 0.5;
+            let color = 'rgba(148, 163, 184, 0.8)'; 
+            
+            this.particles.push(new Particle(x, y, directionX, directionY, size, color, this.canvas, this.ctx, this.mouse));
+        }
+    },
+    animate() {
+        requestAnimationFrame(() => this.animate());
+        this.ctx.clearRect(0, 0, innerWidth, innerHeight);
+        
+        for (let i = 0; i < this.particles.length; i++) {
+            this.particles[i].update();
+        }
+        this.connect();
+    },
+    connect() {
+        let opacityValue = 1;
+        for (let a = 0; a < this.particles.length; a++) {
+            for (let b = a; b < this.particles.length; b++) {
+                let distance = ((this.particles[a].x - this.particles[b].x) * (this.particles[a].x - this.particles[b].x))
+                + ((this.particles[a].y - this.particles[b].y) * (this.particles[a].y - this.particles[b].y));
+                
+                if (distance < (this.canvas.width / 10) * (this.canvas.height / 10)) {
+                    opacityValue = 1 - (distance / 20000);
+                    this.ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue * 0.2})`; 
+                    this.ctx.lineWidth = 1;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(this.particles[a].x, this.particles[a].y);
+                    this.ctx.lineTo(this.particles[b].x, this.particles[b].y);
+                    this.ctx.stroke();
+                }
+            }
+        }
+    }
+};
+
+class Particle {
+    constructor(x, y, directionX, directionY, size, color, canvas, ctx, mouse) {
+        this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
+        this.size = size; this.color = color; this.canvas = canvas; this.ctx = ctx; this.mouse = mouse;
+    }
+    draw() {
+        this.ctx.beginPath();
+        this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        this.ctx.fillStyle = '#3b82f6';
+        this.ctx.fill();
+    }
+    update() {
+        if (this.x > this.canvas.width || this.x < 0) this.directionX = -this.directionX;
+        if (this.y > this.canvas.height || this.y < 0) this.directionY = -this.directionY;
+
+        // Mouse collision
+        let dx = this.mouse.x - this.x;
+        let dy = this.mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < this.mouse.radius + this.size) {
+            if (this.mouse.x < this.x && this.x < this.canvas.width - this.size * 10) this.x += 3;
+            if (this.mouse.x > this.x && this.x > this.size * 10) this.x -= 3;
+            if (this.mouse.y < this.y && this.y < this.canvas.height - this.size * 10) this.y += 3;
+            if (this.mouse.y > this.y && this.y > this.size * 10) this.y -= 3;
+        }
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
+    }
+}
+
+/* 2. Custom Fluid Cursor */
+const CustomCursor = {
+    init() {
+        if (!window.matchMedia("(hover: hover)").matches) return;
+
+        this.cursor = document.querySelector('.custom-cursor');
+        this.follower = document.querySelector('.cursor-follower');
+        if (!this.cursor || !this.follower) return;
+
+        this.mouseX = 0; this.mouseY = 0;
+        this.followerX = 0; this.followerY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            this.mouseX = e.clientX;
+            this.mouseY = e.clientY;
+            
+            this.cursor.style.transform = `translate3d(${this.mouseX}px, ${this.mouseY}px, 0) translate(-50%, -50%)`;
+        });
+
+        const hoverElements = document.querySelectorAll('a, button, input, textarea, .magnetic');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+        });
+
+        this.animate();
+    },
+    animate() {
+        this.followerX += (this.mouseX - this.followerX) * 0.15;
+        this.followerY += (this.mouseY - this.followerY) * 0.15;
+        
+        this.follower.style.transform = `translate3d(${this.followerX}px, ${this.followerY}px, 0) translate(-50%, -50%)`;
+        requestAnimationFrame(() => this.animate());
+    }
+};
+
+/* 3. Magnetic UI Elements */
+const MagneticElements = {
+    init() {
+        if (!window.matchMedia("(hover: hover)").matches) return;
+        
+        const magnets = document.querySelectorAll('.magnetic');
+        
+        magnets.forEach(magnet => {
+            magnet.addEventListener('mousemove', (e) => {
+                const rect = magnet.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            
+            magnet.addEventListener('mouseleave', () => {
+                magnet.style.transform = 'translate(0px, 0px)';
+            });
+        });
+    }
+};
+
+/* --- LEVEL 3: GOD-TIER INTERACTIVITY --- */
+
+/* 1. Cybernetic Text Decryption */
+const TextDecryption = {
+    init() {
+        const targets = document.querySelectorAll('.section-title');
+        const chars = '!<>-_\\/[]{}—=+*^?#________';
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.decrypted) {
+                    entry.target.dataset.decrypted = "true";
+                    this.decrypt(entry.target, chars);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        targets.forEach(target => {
+            target.classList.add('decrypt-text');
+            target.dataset.originalText = target.innerText;
+            observer.observe(target);
+        });
+    },
+    
+    decrypt(element, chars) {
+        const originalText = element.dataset.originalText;
+        let iteration = 0;
+        
+        clearInterval(element.decryptionInterval);
+        
+        element.decryptionInterval = setInterval(() => {
+            element.innerText = originalText
+                .split('')
+                .map((letter, index) => {
+                    if(index < iteration) return originalText[index];
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join('');
+                
+            if(iteration >= originalText.length) {
+                clearInterval(element.decryptionInterval);
+                element.innerText = originalText;
+            }
+            
+            iteration += 1 / 3; // Controls the speed of the reveal
+        }, 30);
+    }
+};
+
+/* 2. Holographic Glare Upgraded Tilt */
+const UpgradedTiltAndGlare = {
+    init() {
+        const elements = document.querySelectorAll('.project-card, .skill-card, .contact-info-card, .contact-form-card');
+        
+        if (window.matchMedia("(hover: hover)").matches) {
+            elements.forEach(el => {
+                el.addEventListener('mousemove', this.handleMove);
+                el.addEventListener('mouseleave', this.handleLeave);
+            });
+        }
+    },
+    handleMove(e) {
+        const el = this;
+        const rect = el.getBoundingClientRect();
+        
+        // Coordinates relative to the element
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Tilt Math
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -5; 
+        const rotateY = ((x - centerX) / centerX) * 5;
+        
+        // Apply Tilt
+        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        
+        // Apply Glare Tracking via CSS Variables
+        el.style.setProperty('--mouse-x', `${x}px`);
+        el.style.setProperty('--mouse-y', `${y}px`);
+    },
+    handleLeave() {
+        this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+        // Soft reset for glare
+        this.style.setProperty('--mouse-x', `50%`);
+        this.style.setProperty('--mouse-y', `50%`);
+    }
+};
+
+/* 3. Tactile Click Shockwaves */
+const ClickShockwave = {
+    init() {
+        window.addEventListener('click', (e) => {
+            // Don't trigger if clicking inside a modal to prevent clipping issues
+            if (e.target.closest('.modal')) return;
+            
+            const shockwave = document.createElement('div');
+            shockwave.classList.add('click-shockwave');
+            
+            // Set size dynamically
+            const size = 100; 
+            shockwave.style.width = `${size}px`;
+            shockwave.style.height = `${size}px`;
+            
+            // Position at exact mouse coordinates
+            shockwave.style.left = `${e.clientX}px`;
+            shockwave.style.top = `${e.clientY}px`;
+            
+            document.body.appendChild(shockwave);
+            
+            // Remove DOM element after animation completes
+            setTimeout(() => {
+                shockwave.remove();
+            }, 600);
+        });
     }
 };

@@ -1,75 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mark Brian Viloria | Resume</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#020617">
+    <title>Mark Brian Viloria | Interactive Resume</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="resume">
-  <div class="page">
-    <header class="hero">
-      <h1>Mark Brian Viloria</h1>
-      <p class="tagline">Aspiring IT professional with hands-on experience in full-stack web development and database management.</p>
-      <div class="contacts">
-        <span><i class="fa-solid fa-location-dot"></i> Quezon City, PH</span>
-        <a href="tel:+639935259766"><i class="fa-solid fa-phone"></i> 09935259766</a>
-        <a href="mailto:markbrianv229@gmail.com"><i class="fa-solid fa-envelope"></i> markbrianv229@gmail.com</a>
-        <a href="https://github.com/markbrian-hue" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
-      </div>
-    </header>
+<body class="resume-page">
 
-    <section class="section">
-      <h2>Experience & Projects</h2>
-      <div class="cards">
-        <article class="card">
-          <div class="card-head">
-            <h3>POS with Smart Inventory System</h3>
-            <span class="role">Full Stack Developer</span>
-          </div>
-          <p>Developed a full-stack POS with a Smart Inventory System that automatically deducts ingredients and provides accurate data analytics for improved forecasting and decision-making.</p>
-        </article>
+  <canvas id="networkCanvas"></canvas>
+    <div class="custom-cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <div class="resume-wrapper fade-in">
+        <a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a>
 
-        <article class="card">
-          <div class="card-head">
-            <h3>QCU Entrep Hub</h3>
-            <span class="role">Full Stack Developer</span>
-          </div>
-          <p>Developed an e-commerce platform for Quezon City University using Vue.js, JavaScript, and C#. Features include dynamic product listings, user account management, and a seamless checkout experience tailored for student entrepreneurs.</p>
-        </article>
+        <div class="resume-grid">
+            <aside class="resume-sidebar tilt-element">
+                <header class="resume-header">
+                    <h1>Mark Brian Viloria</h1>
+                    <p class="tagline highlight-text">Full Stack Developer</p>
+                    <p class="bio">Aspiring IT professional with hands-on experience in full-stack web development, database management, and smart IoT solutions.</p>
+                    
+                    <div class="resume-contacts">
+                        <a href="mailto:markbrianv229@gmail.com"><i class="fa-solid fa-envelope"></i> markbrianv229@gmail.com</a>
+                        <a href="tel:+639935259766"><i class="fa-solid fa-phone"></i> 09935259766</a>
+                        <span><i class="fa-solid fa-location-dot"></i> Quezon City, PH</span>
+                        <a href="https://github.com/markbrian-hue" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+                    </div>
+                </header>
 
-        <article class="card">
-          <div class="card-head">
-            <h3>The Celestia Hotel</h3>
-            <span class="role">Frontend Developer</span>
-          </div>
-          <p>Designed and developed a responsive frontend website for a hotel using React.js. Features include a modern UI, smooth animations, and mobile optimization.</p>
-        </article>
-      </div>
-    </section>
+                <div class="resume-skills">
+                    <h2>Core Skills</h2>
+                    <div class="skill-tags">
+                        <span class="skill-tag">React.js</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Vue.js</span>
+                        <span class="skill-tag">ASP.NET MVC</span>
+                        <span class="skill-tag">JavaScript (ES6+)</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">C#</span>
+                        <span class="skill-tag">SQL</span>
+                        <span class="skill-tag">Tailwind CSS</span>
+                        <span class="skill-tag">WordPress & Wix</span>
+                        <span class="skill-tag">IoT (ESP32)</span>
+                    </div>
+                </div>
+            </aside>
 
-    <section class="section">
-      <h2>Education</h2>
-      <div class="cards">
-        <article class="card">
-          <div class="card-head">
-            <h3>Quezon City University</h3>
-            <span class="role">Bachelor of Science in Information Technology · 2023 – 2027</span>
-          </div>
-          <p>Relevant Coursework: Developed a functional blog website, managed short film projects, and programmed applications for final projects.</p>
-        </article>
+            <main class="resume-main">
+                <section class="resume-section">
+                    <h2><i class="fa-solid fa-briefcase"></i> Experience & Projects</h2>
+                    <div class="timeline">
+                        
+                        <div class="timeline-item tilt-element">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Luxury Travel Website Developer</h3>
+                                <span class="timeline-date">Freelance Client • Feb 2026</span>
+                                <p>Designed and developed a premium, highly interactive web experience showcasing luxury travel destinations, featuring smooth animations, responsive image galleries, and secure booking inquiries.</p>
+                            </div>
+                        </div>
 
-        <article class="card">
-          <div class="card-head">
-            <h3>Commonwealth High School</h3>
-            <span class="role">Graduated with Honors</span>
-          </div>
-          <p>Completed secondary education with an average grade of 93.</p>
-        </article>
-      </div>
-    </section>
-  </div>
+                        <div class="timeline-item tilt-element">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>POS with Smart Inventory System</h3>
+                                <span class="timeline-date">Full Stack Developer</span>
+                                <p>Developed a full-stack Point of Sale system. Engineered an automated inventory deduction system and integrated data analytics for accurate sales forecasting and intelligent decision-making.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item tilt-element">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>QCU Entrep Hub</h3>
+                                <span class="timeline-date">Full Stack Developer</span>
+                                <p>Built an e-commerce platform for student entrepreneurs using Vue.js, JavaScript, and C#. Implemented dynamic product listings, secure user management, and seamless checkout flows.</p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item tilt-element">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>The Celestia Hotel</h3>
+                                <span class="timeline-date">Frontend Developer</span>
+                                <p>Designed and developed a responsive frontend website for a hotel using React.js, featuring a modern UI, real-time availability updates, and mobile optimization.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="resume-section mt-4">
+                    <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+                    <div class="timeline">
+                        <div class="timeline-item tilt-element">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h3>Bachelor of Science in Information Technology</h3>
+                                <span class="timeline-date">Quezon City University • 2023 – 2027</span>
+                                <p><strong>Key Coursework:</strong> Systems Integration and Architecture, Algorithm Complexity, Information Assurance and Security, Quantitative Methods.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>

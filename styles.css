@@ -292,3 +292,239 @@ body.resume { background: var(--bg-1); color: var(--text-body); }
 .page .card h3 { color: var(--primary); font-size: 1.25rem; }
 .page .role { color: var(--accent-2); font-weight: 600; font-size: 0.95rem; }
 .page .card p { color: var(--text-body); line-height: 1.6; font-size: 0.95rem; margin: 0; }
+
+/* --- NEW INTERACTIVE & RESUME STYLES --- */
+
+/* Interactive Tilt & Glow Effects */
+.tilt-element {
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+.tilt-element:hover {
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+    border-color: var(--accent-1);
+    z-index: 10;
+}
+
+/* Typing Effect Cursor */
+.typing-cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background-color: var(--accent-1);
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+    margin-left: 4px;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Resume Page Layout */
+body.resume-page {
+    background: var(--bg-1);
+    padding: 40px 20px;
+    background-image: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.08), transparent 60%);
+}
+.resume-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+}
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-body);
+    margin-bottom: 32px;
+    font-weight: 600;
+    transition: color var(--transition), transform var(--transition);
+}
+.btn-back:hover { color: var(--accent-1); transform: translateX(-5px); }
+
+/* Grid Structure */
+.resume-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 48px;
+}
+
+/* Sidebar */
+.resume-sidebar {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    height: fit-content;
+    position: sticky;
+    top: 40px;
+}
+.resume-header h1 { color: var(--primary); font-size: 2rem; margin-bottom: 8px; line-height: 1.2; }
+.highlight-text { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700; font-size: 1.1rem; }
+.bio { margin: 16px 0 24px; font-size: 0.95rem; line-height: 1.6; }
+.resume-contacts { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+.resume-contacts a, .resume-contacts span { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; transition: color var(--transition); }
+.resume-contacts a:hover { color: var(--accent-1); transform: translateX(5px); }
+.resume-contacts i { color: var(--accent-2); width: 16px; text-align: center; }
+
+/* Skills Tags */
+.resume-skills h2 { color: var(--primary); font-size: 1.2rem; margin-bottom: 16px; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.skill-tag {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    transition: all var(--transition);
+    cursor: default;
+}
+.skill-tag:hover { background: var(--accent-1); color: #fff; transform: translateY(-2px); }
+
+/* Timeline Main Content */
+.resume-section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
+.resume-section h2 i { color: var(--accent-1); }
+.mt-4 { margin-top: 48px; }
+
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(to bottom, var(--accent-1), var(--accent-2));
+    border-radius: 2px;
+}
+.timeline-item {
+    position: relative; margin-bottom: 32px; background: var(--glass);
+    border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;
+}
+.timeline-dot {
+    position: absolute; left: -31px; top: 28px; width: 14px; height: 14px;
+    border-radius: 50%; background: var(--bg-1); border: 2px solid var(--accent-1);
+    box-shadow: 0 0 10px var(--accent-1);
+}
+.timeline-content h3 { color: var(--primary); font-size: 1.3rem; margin-bottom: 4px; }
+.timeline-date { display: inline-block; color: var(--accent-2); font-size: 0.9rem; font-weight: 600; margin-bottom: 12px; }
+.timeline-content p { font-size: 0.95rem; }
+
+/* Mobile Optimization for Resume */
+@media (max-width: 900px) {
+    .resume-grid { grid-template-columns: 1fr; gap: 32px; }
+    .resume-sidebar { position: relative; top: 0; }
+    .timeline::before { left: 16px; }
+    .timeline { padding-left: 40px; }
+    .timeline-dot { left: -31px; }
+}
+
+/* --- NEXT LEVEL INTERACTIVITY --- */
+
+/* Canvas Background */
+#networkCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Custom Cursor (Desktop Only) */
+@media (hover: hover) and (pointer: fine) {
+    body {
+        cursor: none; /* Hide default cursor */
+    }
+    
+    a, button, input, textarea, .magnetic {
+        cursor: none;
+    }
+
+    .custom-cursor, .cursor-follower {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+    }
+
+    .custom-cursor {
+        width: 8px;
+        height: 8px;
+        background-color: var(--accent-1);
+        transition: width 0.2s, height 0.2s, background-color 0.2s;
+    }
+
+    .cursor-follower {
+        width: 40px;
+        height: 40px;
+        border: 1px solid rgba(59, 130, 246, 0.5);
+        transition: transform 0.1s ease-out, width 0.2s, height 0.2s, background-color 0.2s;
+    }
+
+    /* Hover States for Custom Cursor */
+    body.hovering-link .custom-cursor {
+        width: 0;
+        height: 0;
+    }
+    
+    body.hovering-link .cursor-follower {
+        width: 60px;
+        height: 60px;
+        background-color: rgba(59, 130, 246, 0.1);
+        border-color: var(--accent-1);
+        backdrop-filter: blur(2px);
+    }
+}
+
+/* Magnetic Elements */
+.magnetic {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    will-change: transform;
+}
+
+/* --- LEVEL 3: GOD-TIER INTERACTIVITY --- */
+
+/* Holographic Glare for Cards */
+.project-card, .skill-card, .contact-info-card, .contact-form-card {
+    position: relative;
+    overflow: hidden; /* Contains the glare */
+}
+
+.project-card::after, .skill-card::after, .contact-info-card::after, .contact-form-card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15), transparent 40%);
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* Prevents glare from blocking clicks */
+}
+
+.project-card:hover::after, .skill-card:hover::after, .contact-info-card:hover::after, .contact-form-card:hover::after {
+    opacity: 1;
+}
+
+/* Tactile Click Shockwave */
+.click-shockwave {
+    position: fixed;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid var(--accent-1);
+    transform: translate(-50%, -50%) scale(0);
+    animation: shockwave 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    pointer-events: none;
+    z-index: 9998; /* Just below the custom cursor */
+}
+
+@keyframes shockwave {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; border-width: 2px; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; border-width: 0px; }
+}
+
+/* Decryption Text State */
+.decrypt-text {
+    font-variant-numeric: tabular-nums; /* Keeps text from jumping around */
+}
