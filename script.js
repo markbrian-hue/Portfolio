@@ -1,34 +1,36 @@
 /**
- * Portfolio JavaScript - Advanced Interactive Version
- * Contact form sends emails to markbrianv229@gmail.com via FormSubmit.co
+ * Portfolio JavaScript - Level 4 Awwwards Masterclass Version
+ * Features: Lenis Smooth Scroll, GSAP Animations, Three.js WebGL, 
+ * Cybernetic Text, Custom Cursor, and Magnetic UI.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Core Functionality
+    // 1. Core Functionality
     MobileMenu.init();
     ContactModal.init();
     ProjectModal.init();
-    SmoothScroll.init();
-    FadeInOnScroll.init();
     
-    // Level 1 Interactivity
+    // 2. Custom Interactions
     InteractiveTyping.init();
-    // Removed old TiltEffect.init() here
-    
-    // Level 2 Advanced Interactivity
-    CanvasNetwork.init();
     CustomCursor.init();
     MagneticElements.init();
     
-    // Level 3 God-Tier Interactivity
+    // 3. God-Tier UI Effects
     TextDecryption.init();
-    UpgradedTiltAndGlare.init(); // This replaces the old tilt!
+    UpgradedTiltAndGlare.init();
     ClickShockwave.init();
+
+    // 4. External Dependencies (The Heavy Artillery)
+    SmoothScroller.init(); // Lenis Smooth Scrolling
+    GSAPAnimations.init(); // GSAP ScrollTrigger
+    WebGLBackground.init(); // Three.js 3D Particles
     
-    console.log('Portfolio loaded successfully. Operating at maximum interactivity.');
+    console.log('Portfolio loaded. Operating at maximum interactivity with GSAP, Lenis, and WebGL.');
 });
 
-/* --- CORE FUNCTIONALITY --- */
+/* ==========================================
+   1. CORE FUNCTIONALITY
+========================================== */
 
 /* Mobile Menu */
 const MobileMenu = {
@@ -176,17 +178,6 @@ const ContactModal = {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         });
-    },
-
-    fallbackEmail(formEl) {
-        const formData = new FormData(formEl);
-        const name = formData.get('from_name');
-        const email = formData.get('from_email');
-        const subject = formData.get('subject');
-        const message = formData.get('message');
-        const mailtoLink = `mailto:markbrianv229@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} (${email})\n\n${message}`)}`;
-        window.location.href = mailtoLink;
-        return Promise.resolve();
     }
 };
 
@@ -314,10 +305,8 @@ const ProjectModal = {
 
     open(projectId) {
         const project = this.projects[projectId];
-        if (!project) {
-            console.error(`Project "${projectId}" not found`);
-            return;
-        }
+        if (!project) return;
+        
         this.contentContainer.innerHTML = this.renderProject(project);
         this.modal.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -351,45 +340,12 @@ const ProjectModal = {
     }
 };
 
-/* Smooth Scroll */
-const SmoothScroll = {
-    init() {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                const targetId = anchor.getAttribute('href');
-                if (targetId === '#') return;
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    e.preventDefault();
-                    const headerOffset = 80;
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-                }
-            });
-        });
-    }
-};
 
-/* Fade-in on scroll */
-const FadeInOnScroll = {
-    init() {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
+/* ==========================================
+   2. CUSTOM INTERACTIONS
+========================================== */
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-    }
-};
-
-/* --- LEVEL 1 INTERACTIVITY --- */
-
-/* Interactive Typing Effect for Hero Section */
+/* Interactive Typing Effect */
 const InteractiveTyping = {
     init() {
         this.element = document.querySelector('#typewriter'); 
@@ -433,147 +389,7 @@ const InteractiveTyping = {
     }
 };
 
-/* 3D Tilt Effect for Cards on Mouse Move */
-const TiltEffect = {
-    init() {
-        const elements = document.querySelectorAll('.project-card, .skill-card, .tilt-element');
-        
-        if (window.matchMedia("(hover: hover)").matches) {
-            elements.forEach(el => {
-                el.addEventListener('mousemove', this.handleMove);
-                el.addEventListener('mouseleave', this.handleLeave);
-            });
-        }
-    },
-    handleMove(e) {
-        const el = this;
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = ((y - centerY) / centerY) * -5; 
-        const rotateY = ((x - centerX) / centerX) * 5;
-        
-        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    },
-    handleLeave() {
-        this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-    }
-};
-
-/* --- LEVEL 2: ADVANCED AWWWARDS INTERACTIVITY --- */
-
-/* 1. Physics-based Node Network (Canvas) */
-const CanvasNetwork = {
-    init() {
-        this.canvas = document.getElementById('networkCanvas');
-        if (!this.canvas) return;
-        
-        this.ctx = this.canvas.getContext('2d');
-        this.particles = [];
-        this.mouse = { x: null, y: null, radius: 150 };
-        
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        
-        window.addEventListener('mousemove', (e) => {
-            this.mouse.x = e.x;
-            this.mouse.y = e.y;
-        });
-        
-        window.addEventListener('mouseout', () => {
-            this.mouse.x = null;
-            this.mouse.y = null;
-        });
-
-        this.createParticles();
-        this.animate();
-    },
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
-        this.createParticles();
-    },
-    createParticles() {
-        this.particles = [];
-        let numberOfParticles = (this.canvas.width * this.canvas.height) / 15000;
-        for (let i = 0; i < numberOfParticles; i++) {
-            let size = (Math.random() * 2) + 1;
-            let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-            let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-            let directionX = (Math.random() * 1) - 0.5;
-            let directionY = (Math.random() * 1) - 0.5;
-            let color = 'rgba(148, 163, 184, 0.8)'; 
-            
-            this.particles.push(new Particle(x, y, directionX, directionY, size, color, this.canvas, this.ctx, this.mouse));
-        }
-    },
-    animate() {
-        requestAnimationFrame(() => this.animate());
-        this.ctx.clearRect(0, 0, innerWidth, innerHeight);
-        
-        for (let i = 0; i < this.particles.length; i++) {
-            this.particles[i].update();
-        }
-        this.connect();
-    },
-    connect() {
-        let opacityValue = 1;
-        for (let a = 0; a < this.particles.length; a++) {
-            for (let b = a; b < this.particles.length; b++) {
-                let distance = ((this.particles[a].x - this.particles[b].x) * (this.particles[a].x - this.particles[b].x))
-                + ((this.particles[a].y - this.particles[b].y) * (this.particles[a].y - this.particles[b].y));
-                
-                if (distance < (this.canvas.width / 10) * (this.canvas.height / 10)) {
-                    opacityValue = 1 - (distance / 20000);
-                    this.ctx.strokeStyle = `rgba(59, 130, 246, ${opacityValue * 0.2})`; 
-                    this.ctx.lineWidth = 1;
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(this.particles[a].x, this.particles[a].y);
-                    this.ctx.lineTo(this.particles[b].x, this.particles[b].y);
-                    this.ctx.stroke();
-                }
-            }
-        }
-    }
-};
-
-class Particle {
-    constructor(x, y, directionX, directionY, size, color, canvas, ctx, mouse) {
-        this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
-        this.size = size; this.color = color; this.canvas = canvas; this.ctx = ctx; this.mouse = mouse;
-    }
-    draw() {
-        this.ctx.beginPath();
-        this.ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        this.ctx.fillStyle = '#3b82f6';
-        this.ctx.fill();
-    }
-    update() {
-        if (this.x > this.canvas.width || this.x < 0) this.directionX = -this.directionX;
-        if (this.y > this.canvas.height || this.y < 0) this.directionY = -this.directionY;
-
-        // Mouse collision
-        let dx = this.mouse.x - this.x;
-        let dy = this.mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < this.mouse.radius + this.size) {
-            if (this.mouse.x < this.x && this.x < this.canvas.width - this.size * 10) this.x += 3;
-            if (this.mouse.x > this.x && this.x > this.size * 10) this.x -= 3;
-            if (this.mouse.y < this.y && this.y < this.canvas.height - this.size * 10) this.y += 3;
-            if (this.mouse.y > this.y && this.y > this.size * 10) this.y -= 3;
-        }
-        this.x += this.directionX;
-        this.y += this.directionY;
-        this.draw();
-    }
-}
-
-/* 2. Custom Fluid Cursor */
+/* Custom Fluid Cursor */
 const CustomCursor = {
     init() {
         if (!window.matchMedia("(hover: hover)").matches) return;
@@ -588,7 +404,6 @@ const CustomCursor = {
         window.addEventListener('mousemove', (e) => {
             this.mouseX = e.clientX;
             this.mouseY = e.clientY;
-            
             this.cursor.style.transform = `translate3d(${this.mouseX}px, ${this.mouseY}px, 0) translate(-50%, -50%)`;
         });
 
@@ -603,25 +418,22 @@ const CustomCursor = {
     animate() {
         this.followerX += (this.mouseX - this.followerX) * 0.15;
         this.followerY += (this.mouseY - this.followerY) * 0.15;
-        
         this.follower.style.transform = `translate3d(${this.followerX}px, ${this.followerY}px, 0) translate(-50%, -50%)`;
         requestAnimationFrame(() => this.animate());
     }
 };
 
-/* 3. Magnetic UI Elements */
+/* Magnetic UI Elements */
 const MagneticElements = {
     init() {
         if (!window.matchMedia("(hover: hover)").matches) return;
         
         const magnets = document.querySelectorAll('.magnetic');
-        
         magnets.forEach(magnet => {
             magnet.addEventListener('mousemove', (e) => {
                 const rect = magnet.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                
                 magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
             });
             
@@ -632,9 +444,12 @@ const MagneticElements = {
     }
 };
 
-/* --- LEVEL 3: GOD-TIER INTERACTIVITY --- */
 
-/* 1. Cybernetic Text Decryption */
+/* ==========================================
+   3. GOD-TIER UI EFFECTS
+========================================== */
+
+/* Cybernetic Text Decryption */
 const TextDecryption = {
     init() {
         const targets = document.querySelectorAll('.section-title');
@@ -676,15 +491,15 @@ const TextDecryption = {
                 element.innerText = originalText;
             }
             
-            iteration += 1 / 3; // Controls the speed of the reveal
+            iteration += 1 / 3; 
         }, 30);
     }
 };
 
-/* 2. Holographic Glare Upgraded Tilt */
+/* Holographic Glare & Upgraded Tilt */
 const UpgradedTiltAndGlare = {
     init() {
-        const elements = document.querySelectorAll('.project-card, .skill-card, .contact-info-card, .contact-form-card');
+        const elements = document.querySelectorAll('.project-card, .skill-card, .contact-info-card, .contact-form-card, .tilt-element');
         
         if (window.matchMedia("(hover: hover)").matches) {
             elements.forEach(el => {
@@ -696,57 +511,238 @@ const UpgradedTiltAndGlare = {
     handleMove(e) {
         const el = this;
         const rect = el.getBoundingClientRect();
-        
-        // Coordinates relative to the element
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         
-        // Tilt Math
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
         const rotateX = ((y - centerY) / centerY) * -5; 
         const rotateY = ((x - centerX) / centerX) * 5;
         
-        // Apply Tilt
         el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        
-        // Apply Glare Tracking via CSS Variables
         el.style.setProperty('--mouse-x', `${x}px`);
         el.style.setProperty('--mouse-y', `${y}px`);
     },
     handleLeave() {
         this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        // Soft reset for glare
         this.style.setProperty('--mouse-x', `50%`);
         this.style.setProperty('--mouse-y', `50%`);
     }
 };
 
-/* 3. Tactile Click Shockwaves */
+/* Tactile Click Shockwaves */
 const ClickShockwave = {
     init() {
         window.addEventListener('click', (e) => {
-            // Don't trigger if clicking inside a modal to prevent clipping issues
-            if (e.target.closest('.modal')) return;
+            if (e.target.closest('.modal') || !window.matchMedia("(hover: hover)").matches) return;
             
             const shockwave = document.createElement('div');
             shockwave.classList.add('click-shockwave');
             
-            // Set size dynamically
             const size = 100; 
             shockwave.style.width = `${size}px`;
             shockwave.style.height = `${size}px`;
-            
-            // Position at exact mouse coordinates
             shockwave.style.left = `${e.clientX}px`;
             shockwave.style.top = `${e.clientY}px`;
             
             document.body.appendChild(shockwave);
             
-            // Remove DOM element after animation completes
             setTimeout(() => {
                 shockwave.remove();
             }, 600);
         });
+    }
+};
+
+
+/* ==========================================
+   4. EXTERNAL DEPENDENCIES (CDN)
+========================================== */
+
+/* Lenis Smooth Scrolling */
+const SmoothScroller = {
+    init() {
+        if (typeof Lenis === 'undefined') return;
+
+        this.lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        // GSAP Sync
+        if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+            this.lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => {
+                this.lenis.raf(time * 1000);
+            });
+            gsap.ticker.lagSmoothing(0, 0);
+        } else {
+            const raf = (time) => {
+                this.lenis.raf(time);
+                requestAnimationFrame(raf);
+            };
+            requestAnimationFrame(raf);
+        }
+
+        // Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                const targetId = anchor.getAttribute('href');
+                if (targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault();
+                    this.lenis.scrollTo(targetElement, { offset: -80 });
+                }
+            });
+        });
+    }
+};
+
+/* GSAP Advanced Scroll Animations */
+const GSAPAnimations = {
+    init() {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Reveal basic .fade-in elements (Headings, text, etc.)
+        // We exclude the cards here so GSAP can handle them separately below
+        const fadeElements = document.querySelectorAll('.fade-in:not(.skill-card):not(.project-card)');
+        fadeElements.forEach(el => {
+            ScrollTrigger.create({
+                trigger: el,
+                start: "top 85%", 
+                toggleClass: "visible", 
+                once: true 
+            });
+        });
+
+        // 2. Hero Parallax
+        const heroImg = document.querySelector('.hero-image img');
+        if (heroImg) {
+            gsap.to(heroImg, {
+                y: 100,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".hero",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+        }
+
+        // 3. Staggered Skill Cards (FIXED: using fromTo)
+        const skillCards = document.querySelectorAll('.skill-card');
+        if (skillCards.length > 0) {
+            gsap.fromTo(skillCards, 
+                { opacity: 0, y: 50 }, // Start state
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.8, 
+                    stagger: 0.15, 
+                    ease: "back.out(1.7)",
+                    scrollTrigger: {
+                        trigger: '.skills-grid',
+                        start: 'top 85%',
+                    }
+                } // End state
+            );
+        }
+
+        // 4. Staggered Project Cards (FIXED: using fromTo)
+        const projectCards = document.querySelectorAll('.project-card');
+        if (projectCards.length > 0) {
+            gsap.fromTo(projectCards, 
+                { opacity: 0, y: 50 }, // Start state
+                { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 0.8, 
+                    stagger: 0.1, 
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: '.projects-grid',
+                        start: 'top 85%',
+                    }
+                } // End state
+            );
+        }
+    }
+};
+
+/* Three.js 3D WebGL Background */
+const WebGLBackground = {
+    init() {
+        if (typeof THREE === 'undefined') return;
+        
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        
+        this.canvas = document.getElementById('networkCanvas');
+        if(!this.canvas) return;
+
+        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true, antialias: true });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 2000;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 15;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.02,
+            color: 0x3b82f6, 
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
+
+        this.particlesMesh = new THREE.Points(particlesGeometry, material);
+        this.scene.add(this.particlesMesh);
+
+        this.camera.position.z = 4;
+        this.mouseX = 0;
+        this.mouseY = 0;
+
+        window.addEventListener('mousemove', (event) => {
+            this.mouseX = (event.clientX / window.innerWidth) - 0.5;
+            this.mouseY = (event.clientY / window.innerHeight) - 0.5;
+        });
+
+        window.addEventListener('resize', () => {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        this.clock = new THREE.Clock();
+        this.animate();
+    },
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+        const elapsedTime = this.clock.getElapsedTime();
+
+        this.particlesMesh.rotation.y = elapsedTime * 0.05;
+        this.particlesMesh.rotation.x = elapsedTime * 0.02;
+
+        this.particlesMesh.rotation.y += this.mouseX * 0.05;
+        this.particlesMesh.rotation.x += this.mouseY * 0.05;
+
+        this.renderer.render(this.scene, this.camera);
     }
 };
