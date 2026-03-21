@@ -1,38 +1,76 @@
 /**
- * Portfolio JavaScript - Level 4 Awwwards Masterclass Version
- * Features: Lenis Smooth Scroll, GSAP Animations, Three.js WebGL, 
- * Cybernetic Text, Custom Cursor, and Magnetic UI.
+ * Portfolio JavaScript - Elite Level Interaction
+ * Features: Repulsive Neural Network, Lerp Physics, GSAP Parallax, Native Smooth Scrolling
  */
 
+// Math Helper for Smooth Animations
+const lerp = (start, end, factor) => start + (end - start) * factor;
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Core Functionality
+    // 0. Preloader
+    Preloader.init();
+
+    // 1. Core
     MobileMenu.init();
     ContactModal.init();
     ProjectModal.init();
+    ScrollSpy.init();
     
-    // 2. Custom Interactions
+    // 2. Advanced Interactions (No Custom Cursor)
     InteractiveTyping.init();
-    CustomCursor.init();
-    MagneticElements.init();
-    
-    // 3. God-Tier UI Effects
-    TextDecryption.init();
-    UpgradedTiltAndGlare.init();
-    ClickShockwave.init();
+    SmoothMagneticElements.init();
+    AdvancedTiltEffect.init();
 
-    // 4. External Dependencies (The Heavy Artillery)
-    SmoothScroller.init(); // Lenis Smooth Scrolling
-    GSAPAnimations.init(); // GSAP ScrollTrigger
-    WebGLBackground.init(); // Three.js 3D Particles
-    
-    console.log('Portfolio loaded. Operating at maximum interactivity with GSAP, Lenis, and WebGL.');
+    // 3. External Libraries
+    SmoothScroller.init(); 
+    GSAPAnimations.init(); 
+    InteractiveNeuralNetwork.init();
 });
+
+/* ==========================================
+   0. PRELOADER
+========================================== */
+const Preloader = {
+    init() {
+        const preloader = document.querySelector('.preloader');
+        const bar = document.querySelector('.loader-bar');
+        const percentage = document.querySelector('.loader-percentages');
+        
+        if (!preloader) return;
+
+        let width = 0;
+        const interval = setInterval(() => {
+            width += Math.random() * 8;
+            if (width > 100) width = 100;
+            
+            bar.style.width = `${width}%`;
+            percentage.textContent = `${Math.floor(width)}%`;
+
+            if (width === 100) {
+                clearInterval(interval);
+                this.finish(preloader);
+            }
+        }, 30);
+    },
+
+    finish(preloader) {
+        setTimeout(() => {
+            gsap.to(preloader, {
+                yPercent: -100,
+                duration: 1.2,
+                ease: "power4.inOut",
+                onComplete: () => {
+                    preloader.style.display = 'none';
+                    GSAPAnimations.playHeroAnimations();
+                }
+            });
+        }, 400);
+    }
+};
 
 /* ==========================================
    1. CORE FUNCTIONALITY
 ========================================== */
-
-/* Mobile Menu */
 const MobileMenu = {
     init() {
         this.menuBtn = document.querySelector('.mobile-menu-btn');
@@ -54,695 +92,477 @@ const MobileMenu = {
     }
 };
 
-/* Contact Modal + Bottom Form */
-const ContactModal = {
+const ScrollSpy = {
     init() {
-        this.modal = document.getElementById('contactModal');
-        this.form = document.getElementById('contactForm');
-        this.successMessage = document.getElementById('formSuccess');
-        this.errorMessage = document.getElementById('formError');
-        this.retryBtn = document.getElementById('retryBtn');
+        // Add scroll progress bar to nav
+        const nav = document.querySelector('.navbar');
+        const progressBar = document.createElement('div');
+        progressBar.style.cssText = 'position:absolute; bottom:0; left:0; height:2px; background:var(--gradient); width:0%; transition: width 0.1s;';
+        nav.appendChild(progressBar);
 
-        this.bottomForm = document.getElementById('contactFormBottom');
-        this.bottomSuccess = document.getElementById('formSuccessBottom');
-        this.bottomError = document.getElementById('formErrorBottom');
-        this.bottomRetry = document.getElementById('retryBtnBottom');
-
-        if (!this.modal && !this.bottomForm) return;
-
-        document.querySelectorAll('[data-action="contact"]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                this.open();
-            });
-        });
-
-        if (this.modal) {
-            this.modal.querySelector('.modal-close')?.addEventListener('click', () => this.close());
-            this.modal.addEventListener('click', (e) => {
-                if (e.target === this.modal) this.close();
-            });
-        }
-
-        if (this.form) {
-            this.form.addEventListener('submit', (e) => this.handleSubmit(e, this.form, this.successMessage, this.errorMessage));
-        }
-
-        if (this.bottomForm) {
-            this.bottomForm.addEventListener('submit', (e) => this.handleSubmit(e, this.bottomForm, this.bottomSuccess, this.bottomError));
-        }
-
-        if (this.retryBtn) {
-            this.retryBtn.addEventListener('click', () => this.resetForm(this.form, this.successMessage, this.errorMessage, true));
-        }
-        if (this.bottomRetry) {
-            this.bottomRetry.addEventListener('click', () => this.resetForm(this.bottomForm, this.bottomSuccess, this.bottomError, false));
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal && this.modal.classList.contains('active')) {
-                this.close();
-            }
-        });
-    },
-
-    open() {
-        if (this.modal) {
-            this.modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            this.resetForm(this.form, this.successMessage, this.errorMessage, true);
-            setTimeout(() => {
-                const firstInput = this.form?.querySelector('input');
-                if (firstInput) firstInput.focus();
-            }, 300);
-        } else {
-            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-        }
-    },
-
-    close() {
-        if (this.modal) {
-            this.modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    },
-
-    resetForm(formEl, successEl, errorEl, showHeader) {
-        if (formEl) {
-            formEl.style.display = 'block';
-            formEl.reset();
-        }
-        successEl?.classList.remove('show');
-        errorEl?.classList.remove('show');
-        if (showHeader && this.modal) {
-            const header = this.modal.querySelector('.modal-header');
-            if (header) header.style.display = 'block';
-        }
-    },
-
-    async handleSubmit(e, formEl, successEl, errorEl) {
-        e.preventDefault();
-        const submitBtn = formEl.querySelector('.btn-submit');
-        const originalText = submitBtn.textContent;
-
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-
-        try {
-            await this.sendEmail(formEl);
-            formEl.style.display = 'none';
-            successEl?.classList.add('show');
-        } catch (error) {
-            console.error('Email send error:', error);
-            formEl.style.display = 'none';
-            errorEl?.classList.add('show');
-        } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }
-    },
-
-    sendEmail(formEl) {
-        const endpoint = "https://formsubmit.co/ajax/3073cb751d6aad75499b9265ee902496";
-        const formData = new FormData(formEl);
-
-        formData.append("_subject", `Portfolio Contact: ${formData.get('subject')}`);
-        formData.append("_template", "table");
-        formData.append("_captcha", "false");
-
-        return fetch(endpoint, {
-            method: "POST",
-            body: formData,
-            headers: { 'Accept': 'application/json' }
-        }).then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-        });
-    }
-};
-
-/* Project Modal */
-const ProjectModal = {
-    projects: {
-        luxuryTravel: {
-            title: 'Luxury Travel Website',
-            image: 'images/luxury-travel.png',
-            tags: 'Frontend • Custom Coding • WordPress/Wix',
-            description: 'A premium, highly interactive web experience designed for a freelance client to showcase luxury travel destinations. Built with an emphasis on high-end visuals, seamless user journeys, and secure booking functionalities.',
-            features: [
-                'High-end custom UI/UX design tailored for luxury clientele',
-                'Responsive image galleries for immersive destination viewing',
-                'Interactive and secure booking inquiry forms',
-                'Optimized performance for high-resolution visual assets'
-            ],
-            liveUrl: '',
-            githubUrl: ''
-        },
-        cafeWeb: {
-            title: '91 Cafe Website',
-            image: 'images/91cafe.png', 
-            tags: 'Frontend • Web Design • Vercel',
-            description: 'A dedicated front-end promotional website built for 91 Cafe. Designed with a modern, sleek interface to showcase the café\'s offerings, enhance their digital footprint, and provide a seamless browsing experience for customers.',
-            features: [
-                'Modern, responsive, and mobile-first UI design',
-                'Optimized for fast page loading and smooth transitions',
-                'Engaging visual layout for product showcasing',
-                'Live deployment and scalable hosting on Vercel'
-            ],
-            liveUrl: 'https://91-cafe.vercel.app/',
-            githubUrl: ''
-        },
-        pos: {
-            title: 'POS System',
-            image: 'images/pos.png',
-            tags: 'ASP.NET MVC • SQL • C#',
-            description: 'A comprehensive Point of Sale system designed for retail businesses. Features smart inventory management with real-time stock tracking, automated reorder alerts, and advanced data analytics for sales forecasting and business insights.',
-            features: [
-                'Real-time inventory tracking and management',
-                'Sales analytics with visual dashboards',
-                'Automated low-stock alerts and reorder suggestions',
-                'Multi-user support with role-based permissions',
-                'Receipt generation and transaction history',
-                'Data export and reporting features'
-            ],
-            liveUrl: '',
-            githubUrl: 'https://github.com/markbrian-hue/91-Cafe---POS-with-Smart-Inventory-System-and-Data-Analytics'
-        },
-        celestia: {
-            title: 'Celestia Web Application',
-            image: 'images/celestia.png',
-            tags: 'React • TypeScript • SQL • Node.js',
-            description: 'A dynamic web platform that streamlines customer booking and user management. Built with modern technologies for optimal performance and user experience, featuring real-time updates and responsive design across all devices.',
-            features: [
-                'Customer booking system with calendar integration',
-                'User authentication and profile management',
-                'Admin dashboard for business analytics',
-                'Email notifications and reminders',
-                'Mobile-responsive design',
-                'Real-time availability updates'
-            ],
-            liveUrl: 'https://thecelestiahotel.vercel.app/',
-            githubUrl: ''
-        },
-        payment: {
-            title: 'Secure Pay Integration',
-            image: 'images/payment.png',
-            tags: 'API • PayMongo • Node.js • Backend',
-            description: 'A secure payment processing implementation using PayMongo APIs. Handles various payment methods including credit cards, e-wallets, and bank transfers with PCI-compliant security measures and comprehensive transaction management.',
-            features: [
-                'Multiple payment method support (Cards, GCash, Maya)',
-                'Secure PCI-compliant transactions',
-                'Webhook integration for real-time updates',
-                'Refund and dispute management',
-                'Transaction logging and reporting',
-                'Error handling and retry mechanisms'
-            ],
-            liveUrl: '',
-            githubUrl: ''
-        },
-        qcu: {
-            title: 'QCU Food Hub',
-            image: 'images/foodhub.png',
-            tags: 'Vue • JavaScript • C#',
-            description: 'An entrepreneurship hub platform for students to browse ventures, manage listings, and connect with opportunities in the QCU community.',
-            features: [
-                'Venture browsing with categorized listings',
-                'Creator dashboards to add and manage opportunities',
-                'Authentication and role-based actions',
-                'Responsive UI for mobile and desktop',
-                'Real-time data management',
-                'Search and filter functionalities'
-            ],
-            liveUrl: '',
-            githubUrl: 'https://github.com/markbrian-hue/QCU-EntrepHub'
-        }
-    },
-
-    init() {
-        this.modal = document.getElementById('projectModal');
-        this.contentContainer = document.getElementById('projectModalContent');
-        if (!this.modal) return;
-
-        document.querySelectorAll('.btn-view-details').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const projectId = btn.dataset.project;
-                this.open(projectId);
-            });
-        });
-
-        this.modal.querySelector('.modal-close')?.addEventListener('click', () => this.close());
-        this.modal.addEventListener('click', (e) => {
-            if (e.target === this.modal) this.close();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.modal.classList.contains('active')) {
-                this.close();
-            }
-        });
-    },
-
-    open(projectId) {
-        const project = this.projects[projectId];
-        if (!project) return;
+        const sections = document.querySelectorAll('section, header');
+        const navLinks = document.querySelectorAll('.nav-links a');
         
-        this.contentContainer.innerHTML = this.renderProject(project);
-        this.modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    },
+        window.addEventListener('scroll', () => {
+            // Update Progress Bar
+            const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
+            const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            progressBar.style.width = `${(scrollPx / winHeightPx) * 100}%`;
 
-    close() {
-        this.modal.classList.remove('active');
-        document.body.style.overflow = '';
-    },
+            // Active Nav Links
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-    renderProject(project) {
-        const featuresHTML = project.features.map(feature => `<li>${feature}</li>`).join('');
-        let linksHTML = '';
-        if (project.liveUrl) linksHTML += `<a href="${project.liveUrl}" target="_blank" rel="noopener" class="btn-primary magnetic">View Live Site</a>`;
-        if (project.githubUrl) linksHTML += `<a href="${project.githubUrl}" target="_blank" rel="noopener" class="btn-secondary magnetic">View Source Code</a>`;
-        if (!project.liveUrl && !project.githubUrl) linksHTML = '<p style="color: var(--text-body); font-style: italic;">Project links coming soon...</p>';
-
-        return `
-            <img src="${project.image}" alt="${project.title}" class="project-modal-image" onerror="this.style.display='none'">
-            <h2>${project.title}</h2>
-            <p class="tech-tags">${project.tags}</p>
-            <p class="description">${project.description}</p>
-            <div class="project-features">
-                <h4>Key Features</h4>
-                <ul>${featuresHTML}</ul>
-            </div>
-            <div class="project-links">
-                ${linksHTML}
-            </div>
-        `;
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
     }
 };
-
 
 /* ==========================================
    2. CUSTOM INTERACTIONS
 ========================================== */
-
-/* Interactive Typing Effect */
 const InteractiveTyping = {
     init() {
-        this.element = document.querySelector('#typewriter'); 
-        if (!this.element || this.element.closest('.resume-sidebar')) return;
-
-        this.words = ['Full Stack Developer', 'IoT Enthusiast', 'UI/UX Designer'];
-        this.txt = '';
-        this.wordIndex = 0;
-        this.isDeleting = false;
+        const el = document.querySelector('#typewriter');
+        if (!el) return;
+        const words = ['Full Stack Developer', 'IoT Enthusiast', 'UI/UX Designer'];
+        let i = 0, j = 0;
+        let isDeleting = false;
         
-        this.element.innerHTML = '<span class="text"></span><span class="typing-cursor"></span>';
-        this.textElement = this.element.querySelector('.text');
-        
-        this.type();
-    },
-    type() {
-        const current = this.wordIndex % this.words.length;
-        const fullTxt = this.words[current];
+        const type = () => {
+            const current = i % words.length;
+            const fullTxt = words[current];
+            
+            if (isDeleting) {
+                el.textContent = fullTxt.substring(0, j - 1);
+                j--;
+            } else {
+                el.textContent = fullTxt.substring(0, j + 1);
+                j++;
+            }
 
-        if (this.isDeleting) {
-            this.txt = fullTxt.substring(0, this.txt.length - 1);
-        } else {
-            this.txt = fullTxt.substring(0, this.txt.length + 1);
-        }
-
-        this.textElement.textContent = this.txt;
-
-        let typeSpeed = 100;
-        if (this.isDeleting) typeSpeed /= 2;
-
-        if (!this.isDeleting && this.txt === fullTxt) {
-            typeSpeed = 2000; 
-            this.isDeleting = true;
-        } else if (this.isDeleting && this.txt === '') {
-            this.isDeleting = false;
-            this.wordIndex++;
-            typeSpeed = 500; 
-        }
-
-        setTimeout(() => this.type(), typeSpeed);
+            let speed = isDeleting ? 40 : 80;
+            if (!isDeleting && j === fullTxt.length) {
+                speed = 2500;
+                isDeleting = true;
+            } else if (isDeleting && j === 0) {
+                isDeleting = false;
+                i++;
+                speed = 500;
+            }
+            setTimeout(type, speed);
+        };
+        type();
     }
 };
 
-/* Custom Fluid Cursor */
-const CustomCursor = {
+const SmoothMagneticElements = {
     init() {
         if (!window.matchMedia("(hover: hover)").matches) return;
+        const magnets = document.querySelectorAll('.magnetic');
+        
+        magnets.forEach(magnet => {
+            let bounds = magnet.getBoundingClientRect();
+            let mouseX = 0, mouseY = 0;
+            let currentX = 0, currentY = 0;
+            let isHovering = false;
 
-        this.cursor = document.querySelector('.custom-cursor');
-        this.follower = document.querySelector('.cursor-follower');
-        if (!this.cursor || !this.follower) return;
+            magnet.addEventListener('mouseenter', () => {
+                isHovering = true;
+                bounds = magnet.getBoundingClientRect();
+            });
 
-        this.mouseX = 0; this.mouseY = 0;
-        this.followerX = 0; this.followerY = 0;
+            magnet.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX - bounds.left) - bounds.width / 2;
+                mouseY = (e.clientY - bounds.top) - bounds.height / 2;
+            });
+
+            magnet.addEventListener('mouseleave', () => {
+                isHovering = false;
+                mouseX = 0;
+                mouseY = 0;
+            });
+
+            const animate = () => {
+                // Lerp towards target position
+                currentX = lerp(currentX, mouseX, 0.1);
+                currentY = lerp(currentY, mouseY, 0.1);
+                
+                if (isHovering || Math.abs(currentX) > 0.1 || Math.abs(currentY) > 0.1) {
+                    magnet.style.transform = `translate(${currentX * 0.4}px, ${currentY * 0.4}px)`;
+                }
+                requestAnimationFrame(animate);
+            };
+            animate();
+        });
+    }
+};
+
+const AdvancedTiltEffect = {
+    init() {
+        if (!window.matchMedia("(hover: hover)").matches) return;
+        const elements = document.querySelectorAll('.tilt-element');
+        
+        elements.forEach(el => {
+            let rect, centerX, centerY;
+            let targetRotateX = 0, targetRotateY = 0;
+            let currentRotateX = 0, currentRotateY = 0;
+            let isHovering = false;
+
+            el.addEventListener('mouseenter', () => {
+                isHovering = true;
+                rect = el.getBoundingClientRect();
+                centerX = rect.width / 2;
+                centerY = rect.height / 2;
+            });
+
+            el.addEventListener('mousemove', (e) => {
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                targetRotateX = ((y - centerY) / centerY) * -8; // Max 8 deg tilt
+                targetRotateY = ((x - centerX) / centerX) * 8;
+                
+                el.style.setProperty('--mouse-x', `${x}px`);
+                el.style.setProperty('--mouse-y', `${y}px`);
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                isHovering = false;
+                targetRotateX = 0;
+                targetRotateY = 0;
+            });
+
+            const animate = () => {
+                currentRotateX = lerp(currentRotateX, targetRotateX, 0.1);
+                currentRotateY = lerp(currentRotateY, targetRotateY, 0.1);
+                
+                const scale = isHovering ? 1.02 : 1;
+                
+                if (isHovering || Math.abs(currentRotateX) > 0.01 || Math.abs(currentRotateY) > 0.01) {
+                    el.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) scale3d(${scale}, ${scale}, ${scale})`;
+                }
+                requestAnimationFrame(animate);
+            };
+            animate();
+        });
+    }
+};
+
+/* ==========================================
+   3. EXTERNAL DEPENDENCIES & ADVANCED ANIMATION
+========================================== */
+const GSAPAnimations = {
+    init() {
+        gsap.registerPlugin(ScrollTrigger);
+        this.splitText();
+        this.scrollReveals();
+        this.parallaxImages();
+    },
+
+    splitText() {
+        const target = document.querySelector('.split-text-anim');
+        if (!target) return;
+        
+        const words = target.innerText.split(' ');
+        target.innerHTML = '';
+        
+        words.forEach(word => {
+            const wrapper = document.createElement('span');
+            wrapper.className = 'word-wrapper';
+            const inner = document.createElement('span');
+            inner.className = 'word-inner';
+            inner.innerText = word + '\u00A0';
+            wrapper.appendChild(inner);
+            target.appendChild(wrapper);
+        });
+    },
+
+    playHeroAnimations() {
+        const tl = gsap.timeline();
+        
+        tl.to('.word-inner', {
+            y: 0,
+            duration: 1.2,
+            stagger: 0.08,
+            ease: "power4.out"
+        })
+        .to('.fade-in-up', {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power3.out"
+        }, "-=0.8");
+    },
+
+    parallaxImages() {
+        // Subtle image parallax inside project cards
+        gsap.utils.toArray('.img-wrapper').forEach(wrapper => {
+            const img = wrapper.querySelector('img');
+            gsap.fromTo(img, 
+                { y: '-10%', scale: 1.1 },
+                { 
+                    y: '10%', 
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: wrapper,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: true
+                    }
+                }
+            );
+        });
+    },
+
+    scrollReveals() {
+        // Section titles scaling and fading
+        gsap.utils.toArray('.section-header').forEach(header => {
+            gsap.fromTo(header, 
+                { opacity: 0, y: 50, scale: 0.95 },
+                {
+                    opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: header, start: "top 85%" }
+                }
+            );
+        });
+
+        // 3D Rotation Reveal for Cards
+        const skillCards = document.querySelectorAll('.skill-card');
+        gsap.fromTo(skillCards, 
+            { opacity: 0, y: 100, rotationX: -15 },
+            { 
+                opacity: 1, y: 0, rotationX: 0, duration: 1, stagger: 0.15, ease: "back.out(1.2)",
+                scrollTrigger: { trigger: '.skills-grid', start: "top 80%" }
+            }
+        );
+
+        const projectCards = document.querySelectorAll('.project-card');
+        gsap.fromTo(projectCards, 
+            { opacity: 0, y: 100 },
+            { 
+                opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: "power3.out",
+                scrollTrigger: { trigger: '.projects-grid', start: "top 85%" }
+            }
+        );
+        
+        // Timeline Draw Effect
+        gsap.fromTo('.timeline-item', 
+            { opacity: 0, x: -50 },
+            { 
+                opacity: 1, x: 0, duration: 0.8, stagger: 0.2, ease: "power3.out",
+                scrollTrigger: { trigger: '.timeline-grid', start: "top 80%" }
+            }
+        );
+    }
+};
+
+const InteractiveNeuralNetwork = {
+    init() {
+        const canvas = document.getElementById('networkCanvas');
+        if (!canvas) return;
+
+        const scene = new THREE.Scene();
+        // Adds fog to make particles fade smoothly into the background distance
+        scene.fog = new THREE.FogExp2(0x020617, 0.03); 
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const particlesCount = 150; // Increased density
+        const posArray = new Float32Array(particlesCount * 3);
+        const colorsArray = new Float32Array(particlesCount * 3);
+        const particlesData = []; 
+
+        const color1 = new THREE.Color('#3b82f6'); // Blue
+        const color2 = new THREE.Color('#8b5cf6'); // Purple
+
+        for(let i = 0; i < particlesCount; i++) {
+            const i3 = i * 3;
+            // Spread particles wider
+            posArray[i3] = (Math.random() - 0.5) * 25;     // x
+            posArray[i3+1] = (Math.random() - 0.5) * 25;   // y
+            posArray[i3+2] = (Math.random() - 0.5) * 15;   // z
+            
+            // Mix colors between blue and purple randomly for each particle
+            const mixedColor = color1.clone().lerp(color2, Math.random());
+            colorsArray[i3] = mixedColor.r;
+            colorsArray[i3+1] = mixedColor.g;
+            colorsArray[i3+2] = mixedColor.b;
+
+            particlesData.push({
+                velocity: new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.015,
+                    (Math.random() - 0.5) * 0.015,
+                    (Math.random() - 0.5) * 0.015
+                )
+            });
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+        
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.08, 
+            vertexColors: true, 
+            transparent: true, 
+            opacity: 0.9,
+            blending: THREE.AdditiveBlending // Creates a glowing effect when overlapping
+        });
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        const lineMaterial = new THREE.LineBasicMaterial({ 
+            color: 0x5b21b6, // Deep purple lines
+            transparent: true, 
+            opacity: 0.1,
+            blending: THREE.AdditiveBlending
+        });
+        const linesGeometry = new THREE.BufferGeometry();
+        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
+        scene.add(linesMesh);
+
+        camera.position.z = 8;
+
+        // Mouse Interactivity
+        const mouse = new THREE.Vector2(9999, 9999);
+        const mouse3D = new THREE.Vector3();
 
         window.addEventListener('mousemove', (e) => {
-            this.mouseX = e.clientX;
-            this.mouseY = e.clientY;
-            this.cursor.style.transform = `translate3d(${this.mouseX}px, ${this.mouseY}px, 0) translate(-50%, -50%)`;
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            mouse3D.set(mouse.x * 12, mouse.y * 12, 0); 
         });
 
-        const hoverElements = document.querySelectorAll('a, button, input, textarea, .magnetic');
-        hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
-        });
+        const animate = () => {
+            requestAnimationFrame(animate);
 
-        this.animate();
-    },
-    animate() {
-        this.followerX += (this.mouseX - this.followerX) * 0.15;
-        this.followerY += (this.mouseY - this.followerY) * 0.15;
-        this.follower.style.transform = `translate3d(${this.followerX}px, ${this.followerY}px, 0) translate(-50%, -50%)`;
-        requestAnimationFrame(() => this.animate());
-    }
-};
+            const positions = particlesMesh.geometry.attributes.position.array;
+            let linePositions = [];
 
-/* Magnetic UI Elements */
-const MagneticElements = {
-    init() {
-        if (!window.matchMedia("(hover: hover)").matches) return;
-        
-        const magnets = document.querySelectorAll('.magnetic');
-        magnets.forEach(magnet => {
-            magnet.addEventListener('mousemove', (e) => {
-                const rect = magnet.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-            });
-            
-            magnet.addEventListener('mouseleave', () => {
-                magnet.style.transform = 'translate(0px, 0px)';
-            });
-        });
-    }
-};
-
-
-/* ==========================================
-   3. GOD-TIER UI EFFECTS
-========================================== */
-
-/* Cybernetic Text Decryption */
-const TextDecryption = {
-    init() {
-        const targets = document.querySelectorAll('.section-title');
-        const chars = '!<>-_\\/[]{}—=+*^?#________';
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !entry.target.dataset.decrypted) {
-                    entry.target.dataset.decrypted = "true";
-                    this.decrypt(entry.target, chars);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        targets.forEach(target => {
-            target.classList.add('decrypt-text');
-            target.dataset.originalText = target.innerText;
-            observer.observe(target);
-        });
-    },
-    
-    decrypt(element, chars) {
-        const originalText = element.dataset.originalText;
-        let iteration = 0;
-        
-        clearInterval(element.decryptionInterval);
-        
-        element.decryptionInterval = setInterval(() => {
-            element.innerText = originalText
-                .split('')
-                .map((letter, index) => {
-                    if(index < iteration) return originalText[index];
-                    return chars[Math.floor(Math.random() * chars.length)];
-                })
-                .join('');
+            for(let i = 0; i < particlesCount; i++) {
+                const i3 = i * 3;
+                const p = new THREE.Vector3(positions[i3], positions[i3+1], positions[i3+2]);
                 
-            if(iteration >= originalText.length) {
-                clearInterval(element.decryptionInterval);
-                element.innerText = originalText;
+                p.add(particlesData[i].velocity);
+
+                // Mouse Repel Effect
+                const distToMouse = p.distanceTo(mouse3D);
+                if (distToMouse < 4) {
+                    const dir = p.clone().sub(mouse3D).normalize();
+                    p.add(dir.multiplyScalar((4 - distToMouse) * 0.02));
+                }
+
+                // Boundary Bounce
+                if (p.x < -15 || p.x > 15) particlesData[i].velocity.x *= -1;
+                if (p.y < -15 || p.y > 15) particlesData[i].velocity.y *= -1;
+                if (p.z < -10 || p.z > 10) particlesData[i].velocity.z *= -1;
+
+                positions[i3] = p.x;
+                positions[i3+1] = p.y;
+                positions[i3+2] = p.z;
+
+                // Connection Lines (Distance based)
+                for(let j = i + 1; j < particlesCount; j++) {
+                    const j3 = j * 3;
+                    const p2 = new THREE.Vector3(positions[j3], positions[j3+1], positions[j3+2]);
+                    const dist = p.distanceTo(p2);
+
+                    if (dist < 3.5) {
+                        linePositions.push(p.x, p.y, p.z, p2.x, p2.y, p2.z);
+                    }
+                }
             }
-            
-            iteration += 1 / 3; 
-        }, 30);
-    }
-};
 
-/* Holographic Glare & Upgraded Tilt */
-const UpgradedTiltAndGlare = {
-    init() {
-        const elements = document.querySelectorAll('.project-card, .skill-card, .contact-info-card, .contact-form-card, .tilt-element');
-        
-        if (window.matchMedia("(hover: hover)").matches) {
-            elements.forEach(el => {
-                el.addEventListener('mousemove', this.handleMove);
-                el.addEventListener('mouseleave', this.handleLeave);
-            });
-        }
-    },
-    handleMove(e) {
-        const el = this;
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -5; 
-        const rotateY = ((x - centerX) / centerX) * 5;
-        
-        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        el.style.setProperty('--mouse-x', `${x}px`);
-        el.style.setProperty('--mouse-y', `${y}px`);
-    },
-    handleLeave() {
-        this.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
-        this.style.setProperty('--mouse-x', `50%`);
-        this.style.setProperty('--mouse-y', `50%`);
-    }
-};
+            particlesMesh.geometry.attributes.position.needsUpdate = true;
+            linesMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+            
+            // Smooth Camera Parallax Pan
+            camera.position.x += (mouse.x * 3 - camera.position.x) * 0.02;
+            camera.position.y += (mouse.y * 3 - camera.position.y) * 0.02;
+            camera.lookAt(scene.position);
 
-/* Tactile Click Shockwaves */
-const ClickShockwave = {
-    init() {
-        window.addEventListener('click', (e) => {
-            if (e.target.closest('.modal') || !window.matchMedia("(hover: hover)").matches) return;
-            
-            const shockwave = document.createElement('div');
-            shockwave.classList.add('click-shockwave');
-            
-            const size = 100; 
-            shockwave.style.width = `${size}px`;
-            shockwave.style.height = `${size}px`;
-            shockwave.style.left = `${e.clientX}px`;
-            shockwave.style.top = `${e.clientY}px`;
-            
-            document.body.appendChild(shockwave);
-            
-            setTimeout(() => {
-                shockwave.remove();
-            }, 600);
+            renderer.render(scene, camera);
+        };
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     }
 };
 
-
-/* ==========================================
-   4. EXTERNAL DEPENDENCIES (CDN)
-========================================== */
-
-/* Lenis Smooth Scrolling */
 const SmoothScroller = {
     init() {
-        if (typeof Lenis === 'undefined') return;
-
-        this.lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
-
-        // GSAP Sync
-        if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-            this.lenis.on('scroll', ScrollTrigger.update);
-            gsap.ticker.add((time) => {
-                this.lenis.raf(time * 1000);
-            });
-            gsap.ticker.lagSmoothing(0, 0);
-        } else {
-            const raf = (time) => {
-                this.lenis.raf(time);
-                requestAnimationFrame(raf);
-            };
-            requestAnimationFrame(raf);
-        }
-
-        // Anchor Links
+        // Native, default browser scrolling with offset for the fixed navbar
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', (e) => {
-                const targetId = anchor.getAttribute('href');
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
+                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     e.preventDefault();
-                    this.lenis.scrollTo(targetElement, { offset: -80 });
+                    
+                    // 80px offset so the section doesn't hide under your navbar
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
                 }
             });
         });
     }
 };
 
-/* GSAP Advanced Scroll Animations */
-const GSAPAnimations = {
+const ContactModal = {
     init() {
-        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-        gsap.registerPlugin(ScrollTrigger);
-
-        // 1. Reveal basic .fade-in elements (Headings, text, etc.)
-        // We exclude the cards here so GSAP can handle them separately below
-        const fadeElements = document.querySelectorAll('.fade-in:not(.skill-card):not(.project-card)');
-        fadeElements.forEach(el => {
-            ScrollTrigger.create({
-                trigger: el,
-                start: "top 85%", 
-                toggleClass: "visible", 
-                once: true 
-            });
-        });
-
-        // 2. Hero Parallax
-        const heroImg = document.querySelector('.hero-image img');
-        if (heroImg) {
-            gsap.to(heroImg, {
-                y: 100,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: ".hero",
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: true
-                }
-            });
-        }
-
-        // 3. Staggered Skill Cards (FIXED: using fromTo)
-        const skillCards = document.querySelectorAll('.skill-card');
-        if (skillCards.length > 0) {
-            gsap.fromTo(skillCards, 
-                { opacity: 0, y: 50 }, // Start state
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.8, 
-                    stagger: 0.15, 
-                    ease: "back.out(1.7)",
-                    scrollTrigger: {
-                        trigger: '.skills-grid',
-                        start: 'top 85%',
-                    }
-                } // End state
-            );
-        }
-
-        // 4. Staggered Project Cards (FIXED: using fromTo)
-        const projectCards = document.querySelectorAll('.project-card');
-        if (projectCards.length > 0) {
-            gsap.fromTo(projectCards, 
-                { opacity: 0, y: 50 }, // Start state
-                { 
-                    opacity: 1, 
-                    y: 0, 
-                    duration: 0.8, 
-                    stagger: 0.1, 
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: '.projects-grid',
-                        start: 'top 85%',
-                    }
-                } // End state
-            );
-        }
+        const modal = document.getElementById('contactModal');
+        const triggers = document.querySelectorAll('[data-action="contact"]');
+        const closeBtn = modal?.querySelector('.modal-close');
+        
+        triggers.forEach(t => t.addEventListener('click', () => modal.classList.add('active')));
+        closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
     }
 };
 
-/* Three.js 3D WebGL Background */
-const WebGLBackground = {
+const ProjectModal = {
     init() {
-        if (typeof THREE === 'undefined') return;
+        const modal = document.getElementById('projectModal');
+        const triggers = document.querySelectorAll('.btn-view-details');
+        const closeBtn = modal?.querySelector('.modal-close');
+        const content = document.getElementById('projectModalContent');
+
+        triggers.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const id = btn.dataset.project;
+                content.innerHTML = `<h2 style="color:var(--primary); font-size: 2rem;">${id}</h2><p style="margin-top:10px;">Detailed case study overview loading dynamically...</p>`; 
+                modal.classList.add('active');
+            });
+        });
         
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        
-        this.canvas = document.getElementById('networkCanvas');
-        if(!this.canvas) return;
-
-        this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, alpha: true, antialias: true });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 2000;
-        const posArray = new Float32Array(particlesCount * 3);
-
-        for(let i = 0; i < particlesCount * 3; i++) {
-            posArray[i] = (Math.random() - 0.5) * 15;
-        }
-
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-        const material = new THREE.PointsMaterial({
-            size: 0.02,
-            color: 0x3b82f6, 
-            transparent: true,
-            opacity: 0.6,
-            blending: THREE.AdditiveBlending
-        });
-
-        this.particlesMesh = new THREE.Points(particlesGeometry, material);
-        this.scene.add(this.particlesMesh);
-
-        this.camera.position.z = 4;
-        this.mouseX = 0;
-        this.mouseY = 0;
-
-        window.addEventListener('mousemove', (event) => {
-            this.mouseX = (event.clientX / window.innerWidth) - 0.5;
-            this.mouseY = (event.clientY / window.innerHeight) - 0.5;
-        });
-
-        window.addEventListener('resize', () => {
-            this.camera.aspect = window.innerWidth / window.innerHeight;
-            this.camera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        this.clock = new THREE.Clock();
-        this.animate();
-    },
-
-    animate() {
-        requestAnimationFrame(() => this.animate());
-        const elapsedTime = this.clock.getElapsedTime();
-
-        this.particlesMesh.rotation.y = elapsedTime * 0.05;
-        this.particlesMesh.rotation.x = elapsedTime * 0.02;
-
-        this.particlesMesh.rotation.y += this.mouseX * 0.05;
-        this.particlesMesh.rotation.x += this.mouseY * 0.05;
-
-        this.renderer.render(this.scene, this.camera);
+        closeBtn?.addEventListener('click', () => modal.classList.remove('active'));
     }
 };
