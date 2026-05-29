@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#020617">
-    
+
     <!-- ==========================================
          ADVANCED SEO & META TAGS
     =========================================== -->
@@ -14,18 +14,18 @@
     <meta name="keywords" content="Mark Brian Viloria, Full Stack Developer, Web Developer, IoT Developer, UI/UX Designer, Quezon City, Philippines, React, Node.js, ASP.NET, ESP32">
     <meta name="author" content="Mark Brian Viloria">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://markbrianviloria.com/"> <!-- Update with your actual domain -->
+    <link rel="canonical" href="https://markbrianv.netlify.app/">
 
     <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://markbrianviloria.com/">
+    <meta property="og:url" content="https://markbrianv.netlify.app/">
     <meta property="og:title" content="Mark Brian Viloria | Full Stack Developer">
     <meta property="og:description" content="Portfolio of Mark Brian Viloria, a passionate Full Stack Developer and UI/UX Designer based in Quezon City, Philippines.">
-    <meta property="og:image" content="images/profile.png"> <!-- Replace with a wide OG image if you have one -->
+    <meta property="og:image" content="images/profile.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://markbrianviloria.com/">
+    <meta property="twitter:url" content="https://markbrianv.netlify.app/">
     <meta property="twitter:title" content="Mark Brian Viloria | Full Stack Developer">
     <meta property="twitter:description" content="Portfolio of Mark Brian Viloria, a passionate Full Stack Developer and UI/UX Designer based in Quezon City, Philippines.">
     <meta property="twitter:image" content="images/profile.png">
@@ -37,8 +37,8 @@
       "@type": "Person",
       "name": "Mark Brian Viloria",
       "jobTitle": "Full Stack Developer",
-      "url": "https://markbrianviloria.com/",
-      "image": "https://markbrianviloria.com/images/profile.png",
+      "url": "https://markbrianv.netlify.app/",
+      "image": "https://markbrianv.netlify.app/images/profile.png",
       "sameAs": [
         "https://github.com/markbrian-hue",
         "https://www.linkedin.com/in/mark-brian-viloria-b021aa307/"
@@ -51,11 +51,13 @@
     }
     </script>
 
+    <!-- Styles -->
+    <!-- NOTE: you said your styles.css is actually dark-theme-styles.css -->
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Styles for the unique additions (Status Badge & Marquee) -->
+    <!-- Page-specific additions (Status Badge & Ticker) -->
     <style>
         .status-badge {
             display: inline-flex; align-items: center; gap: 8px;
@@ -72,21 +74,39 @@
             70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
             100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
+
+        /* Fix: avoid 100vw overflow issues on some browsers */
         .ticker-wrap {
-            width: 100vw; overflow: hidden; background: var(--bg-2);
-            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-            padding: 20px 0; white-space: nowrap; position: relative; z-index: 10;
+            width: 100%;
+            overflow: hidden;
+            background: var(--bg-2);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
         }
         .ticker-move {
-            display: inline-block; white-space: nowrap; padding-right: 2rem;
+            display: inline-block;
+            white-space: nowrap;
+            padding-right: 2rem;
             animation: ticker 25s linear infinite;
         }
         .ticker-item {
-            display: inline-block; padding: 0 2rem; font-size: 1rem; font-weight: 700;
-            color: var(--text-body); text-transform: uppercase; letter-spacing: 2px;
+            display: inline-block;
+            padding: 0 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
         .ticker-item span { color: var(--accent-1); margin-right: 2rem; }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
     </style>
 </head>
 <body>
@@ -122,13 +142,13 @@
                 <li role="none"><a href="#home" class="nav-item" role="menuitem">Home</a></li>
                 <li role="none"><a href="#skills" class="nav-item" role="menuitem">Skills</a></li>
                 <li role="none"><a href="#projects" class="nav-item" role="menuitem">Work</a></li>
+                <li role="none"><a href="#demos" class="nav-item" role="menuitem">Live Demos</a></li>
                 <li role="none"><a href="#experience" class="nav-item" role="menuitem">Experience</a></li>
                 <li role="none"><button class="btn-nav" data-action="contact">Let's Talk</button></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Swapped divs for semantic <main> tag to boost SEO -->
     <main>
         <header id="home" class="hero">
             <div class="container hero-flex">
@@ -137,8 +157,6 @@
                     <div class="scanline"></div>
                 </div>
                 <div class="hero-text">
-                    
-                    <!-- NEW: Availability Status Badge -->
                     <div class="fade-in-up">
                         <div class="status-badge">
                             <span class="status-dot"></span>
@@ -149,14 +167,22 @@
                     <div class="badge-wrapper fade-in-up">
                         <h2 class="tagline" id="typewriter">Full Stack Developer</h2>
                     </div>
+
                     <h1 class="split-text-anim">Turning complex problems into <span class="highlight">elegant code.</span></h1>
                     <p class="fade-in-up">I am a student and aspiring software engineer passionate about creating dynamic websites, scalable web applications, and smart IoT solutions.</p>
-                    
+
                     <div class="social-links fade-in-up">
-                        <a href="https://github.com/markbrian-hue" target="_blank" rel="noopener noreferrer" class="social-icon magnetic" aria-label="View Mark's GitHub"><i class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/mark-brian-viloria-b021aa307/" target="_blank" rel="noopener noreferrer" class="social-icon magnetic" aria-label="View Mark's LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-                        <a href="mailto:markbrianv229@gmail.com" class="social-icon magnetic" aria-label="Email Mark"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="https://github.com/markbrian-hue" target="_blank" rel="noopener noreferrer" class="social-icon magnetic" aria-label="View Mark's GitHub">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/mark-brian-viloria-b021aa307/" target="_blank" rel="noopener noreferrer" class="social-icon magnetic" aria-label="View Mark's LinkedIn">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </a>
+                        <a href="mailto:markbrianv229@gmail.com" class="social-icon magnetic" aria-label="Email Mark">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
                     </div>
+
                     <div class="hero-btns fade-in-up">
                         <a href="#projects" class="btn-primary magnetic">View My Work</a>
                         <button class="btn-secondary magnetic" data-action="contact">Contact Me</button>
@@ -165,7 +191,7 @@
             </div>
         </header>
 
-        <!-- NEW: Infinite Tech Stack Ticker -->
+        <!-- Infinite Tech Stack Ticker -->
         <div class="ticker-wrap" aria-hidden="true">
             <div class="ticker-move">
                 <div class="ticker-item">React <span>//</span></div>
@@ -191,7 +217,6 @@
                     <p>The modern tools and technologies I use to build robust, scalable products.</p>
                 </div>
                 <div class="skills-grid">
-                    <!-- Added semantic <article> for better structural reading by bots -->
                     <article class="skill-card tilt-element">
                         <div class="icon" aria-hidden="true"><i class="fa-brands fa-react"></i></div>
                         <h3>Frontend Development</h3>
@@ -223,7 +248,7 @@
                     <p>A showcase of my recent work bridging software engineering and hardware solutions.</p>
                 </div>
                 <div class="projects-grid">
-                    
+
                     <article class="project-card tilt-element">
                         <div class="img-wrapper">
                             <img src="images/thebespoke.png" alt="Preview of Luxury Travel Website project" class="project-img" loading="lazy">
@@ -239,7 +264,7 @@
                     <article class="project-card tilt-element">
                         <div class="img-wrapper">
                             <img src="images/91cafe.png" alt="Preview of 91 Cafe E-commerce Website" class="project-img" loading="lazy">
-                             <div class="img-overlay"></div>
+                            <div class="img-overlay"></div>
                         </div>
                         <div class="project-content">
                             <h3>91 Cafe Website</h3>
@@ -251,7 +276,7 @@
                     <article class="project-card tilt-element">
                         <div class="img-wrapper">
                             <img src="images/pos.png" alt="Preview of Coffee Shop POS Dashboard" class="project-img" loading="lazy">
-                             <div class="img-overlay"></div>
+                            <div class="img-overlay"></div>
                         </div>
                         <div class="project-content">
                             <h3>Coffee Shop POS</h3>
@@ -263,7 +288,7 @@
                     <article class="project-card tilt-element">
                         <div class="img-wrapper">
                             <img src="images/celestia.png" alt="Preview of Celestia Hotel Web Application" class="project-img" loading="lazy">
-                             <div class="img-overlay"></div>
+                            <div class="img-overlay"></div>
                         </div>
                         <div class="project-content">
                             <h3>Celestia Web App</h3>
@@ -273,9 +298,9 @@
                     </article>
 
                     <article class="project-card tilt-element">
-                         <div class="img-wrapper">
+                        <div class="img-wrapper">
                             <img src="images/payment.png" alt="Preview of Secure Pay API Integration" class="project-img" loading="lazy">
-                             <div class="img-overlay"></div>
+                            <div class="img-overlay"></div>
                         </div>
                         <div class="project-content">
                             <h3>Secure Pay Integration</h3>
@@ -285,9 +310,9 @@
                     </article>
 
                     <article class="project-card tilt-element">
-                         <div class="img-wrapper">
+                        <div class="img-wrapper">
                             <img src="images/foodhub.png" alt="Preview of QCU Entrep Food Hub platform" class="project-img" loading="lazy">
-                             <div class="img-overlay"></div>
+                            <div class="img-overlay"></div>
                         </div>
                         <div class="project-content">
                             <h3>QCU Food Hub</h3>
@@ -300,16 +325,84 @@
             </div>
         </section>
 
+        <!-- ==========================================
+             NEW: LIVE DEMO WEBSITES SECTION
+        =========================================== -->
+        <section id="demos" class="section-white">
+            <div class="container">
+                <div class="section-header fade-in-up">
+                    <h2 class="section-title">Live Demo Websites</h2>
+                    <p>
+                        These are high-impact business demo sites I built to help clients visualize what their brand could look like.
+                        Click any card to view the live website.
+                    </p>
+                </div>
+
+                <div class="demos-grid">
+                    <a class="demo-card tilt-element magnetic" href="https://melbourne-concreting.netlify.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="demo-top">
+                            <div class="demo-icon" aria-hidden="true"><i class="fa-solid fa-city"></i></div>
+                            <span class="demo-chip">Netlify</span>
+                        </div>
+                        <h3 class="demo-title">Melbourne Concreting</h3>
+                        <p class="demo-desc">Service business demo focused on trust, clarity, and lead capture.</p>
+                        <div class="demo-meta">
+                            <span class="demo-url">melbourne-concreting.netlify.app</span>
+                            <span class="demo-cta">Open Live <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </a>
+
+                    <a class="demo-card tilt-element magnetic" href="https://aretefoodtrailer.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="demo-top">
+                            <div class="demo-icon" aria-hidden="true"><i class="fa-solid fa-burger"></i></div>
+                            <span class="demo-chip">Vercel</span>
+                        </div>
+                        <h3 class="demo-title">Arete Food Trailer</h3>
+                        <p class="demo-desc">Food trucks trailer demo website with modern layout and mobile-first UX.</p>
+                        <div class="demo-meta">
+                            <span class="demo-url">aretefoodtrailer.vercel.app</span>
+                            <span class="demo-cta">Open Live <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </a>
+
+                    <a class="demo-card tilt-element magnetic" href="https://91-cafe.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="demo-top">
+                            <div class="demo-icon" aria-hidden="true"><i class="fa-solid fa-mug-hot"></i></div>
+                            <span class="demo-chip">Vercel</span>
+                        </div>
+                        <h3 class="demo-title">91 Cafe</h3>
+                        <p class="demo-desc">Cafe demo experience designed to feel premium and conversion-focused.</p>
+                        <div class="demo-meta">
+                            <span class="demo-url">91-cafe.vercel.app</span>
+                            <span class="demo-cta">Open Live <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </a>
+
+                    <a class="demo-card tilt-element magnetic" href="https://thecelestiahotel.vercel.app/" target="_blank" rel="noopener noreferrer">
+                        <div class="demo-top">
+                            <div class="demo-icon" aria-hidden="true"><i class="fa-solid fa-hotel"></i></div>
+                            <span class="demo-chip">Vercel</span>
+                        </div>
+                        <h3 class="demo-title">The Celestia Hotel</h3>
+                        <p class="demo-desc">Hotel demo UI concept built to showcase structure, luxury, and usability.</p>
+                        <div class="demo-meta">
+                            <span class="demo-url">thecelestiahotel.vercel.app</span>
+                            <span class="demo-cta">Open Live <i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
         <section id="experience" class="section-light">
             <div class="container">
                 <div class="section-header fade-in-up">
                     <h2 class="section-title">Journey & Experience</h2>
                     <p>A timeline of my academic background and professional development.</p>
                 </div>
-                
+
                 <div class="timeline-grid">
                     <article class="timeline-item tilt-element">
-                        <!-- Used <time> tag for better SEO parsing -->
                         <span class="timeline-date"><time datetime="2026-02">Feb 2026</time> • Freelance</span>
                         <h3 class="timeline-title">Luxury Travel Website Developer</h3>
                         <p class="timeline-subtitle">Independent Client Project</p>
@@ -345,8 +438,7 @@
                 <div class="contact-info-card tilt-element fade-in-up">
                     <h2>Get In Touch</h2>
                     <p>Have a project in mind or want to collaborate? I'm always open to discussing new opportunities and tech solutions.</p>
-                    
-                    <!-- Added semantic <address> block -->
+
                     <address style="font-style: normal;">
                         <div class="contact-item">
                             <div class="contact-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></div>
@@ -397,11 +489,13 @@
                         </div>
                         <button type="submit" class="btn-primary btn-submit magnetic">Send Message</button>
                     </form>
+
                     <div class="form-success" id="formSuccessBottom">
                         <div class="success-icon"><i class="fa-solid fa-check"></i></div>
                         <h3>Message Sent!</h3>
                         <p>Thank you for reaching out. I'll review and respond within 24 hours.</p>
                     </div>
+
                     <div class="form-error" id="formErrorBottom">
                         <div class="error-icon"><i class="fa-solid fa-xmark"></i></div>
                         <h3>Transmission Failed</h3>
@@ -431,14 +525,14 @@
 
     <!-- MODALS -->
     <div class="modal-overlay" id="contactModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-         <div class="modal">
+        <div class="modal">
             <button class="modal-close magnetic" aria-label="Close modal">&times;</button>
             <div class="modal-header">
                 <h2 id="modalTitle">Let's Connect</h2>
                 <p>Fill out the form below and I'll get back to you soon.</p>
             </div>
             <form id="contactForm" class="contact-form">
-                 <div class="form-group">
+                <div class="form-group">
                     <label for="from_name">Name</label>
                     <input type="text" id="from_name" name="from_name" required placeholder="John Doe">
                 </div>
@@ -477,10 +571,10 @@
         </div>
     </div>
 
-    <!-- SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js" defer></script>
+
     <script src="script.js" defer></script>
 </body>
 </html>
