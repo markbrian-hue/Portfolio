@@ -1,10 +1,8 @@
 /**
- * Portfolio JavaScript - Elite Level Interaction (Upgraded)
- * Features: Repulsive Neural Network, Lerp Physics, GSAP Parallax, Native Smooth Scrolling
- * Additions: Premium card ripple, safer DOM guards, modal UX upgrades, reduced-motion support
+ * Portfolio JavaScript - Elite Level
+ * Features: Spotlight Mouse Tracking, Lerp Physics, GSAP Parallax, Native Smooth Scrolling
  */
 
-// Math Helper for Smooth Animations
 const lerp = (start, end, factor) => start + (end - start) * factor;
 
 const prefersReducedMotion = () =>
@@ -20,16 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ProjectModal.init();
     ScrollSpy.init();
 
-    // 2. Advanced Interactions (No Custom Cursor)
-    InteractiveTyping.init();
+    // 2. Advanced Interactions
+    SpotlightCards.init();
     SmoothMagneticElements.init();
     AdvancedTiltEffect.init();
-    PremiumCardInteractions.init();
 
     // 3. External Libraries
     SmoothScroller.init();
     GSAPAnimations.init();
-    InteractiveNeuralNetwork.init();
 });
 
 /* ==========================================
@@ -45,7 +41,7 @@ const Preloader = {
 
         let width = 0;
         const interval = setInterval(() => {
-            width += Math.random() * 8;
+            width += Math.random() * 12;
             if (width > 100) width = 100;
 
             bar.style.width = `${width}%`;
@@ -55,21 +51,20 @@ const Preloader = {
                 clearInterval(interval);
                 this.finish(preloader);
             }
-        }, 30);
+        }, 20);
     },
 
     finish(preloader) {
         setTimeout(() => {
-            // If GSAP isn't loaded for some reason, fail gracefully
             if (typeof gsap === 'undefined') {
                 preloader.style.display = 'none';
                 return;
             }
 
             gsap.to(preloader, {
-                yPercent: -100,
-                duration: prefersReducedMotion() ? 0 : 1.2,
-                ease: "power4.inOut",
+                opacity: 0,
+                duration: prefersReducedMotion() ? 0 : 0.6,
+                ease: "power2.inOut",
                 onComplete: () => {
                     preloader.style.display = 'none';
                     if (typeof GSAPAnimations?.playHeroAnimations === 'function') {
@@ -77,7 +72,7 @@ const Preloader = {
                     }
                 }
             });
-        }, 350);
+        }, 300);
     }
 };
 
@@ -116,22 +111,19 @@ const ScrollSpy = {
         const nav = document.querySelector('.navbar');
         if (!nav) return;
 
-        // Add scroll progress bar to nav
         const progressBar = document.createElement('div');
         progressBar.style.cssText =
-          'position:absolute; bottom:0; left:0; height:2px; background:var(--gradient); width:0%; transition: width 0.1s;';
+          'position:absolute; bottom:0; left:0; height:1px; background:var(--primary); width:0%; transition: width 0.1s;';
         nav.appendChild(progressBar);
 
         const sections = document.querySelectorAll('section, header');
         const navLinks = document.querySelectorAll('.nav-links a');
 
         const onScroll = () => {
-            // Update Progress Bar
             const scrollPx = document.documentElement.scrollTop || document.body.scrollTop;
             const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             progressBar.style.width = `${(scrollPx / winHeightPx) * 100}%`;
 
-            // Active Nav Links
             let current = '';
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -156,40 +148,22 @@ const ScrollSpy = {
 /* ==========================================
    2. CUSTOM INTERACTIONS
 ========================================== */
-const InteractiveTyping = {
+const SpotlightCards = {
     init() {
-        const el = document.querySelector('#typewriter');
-        if (!el) return;
-
-        const words = ['Full Stack Developer', 'IoT Enthusiast', 'UI/UX Designer'];
-        let i = 0, j = 0;
-        let isDeleting = false;
-
-        const type = () => {
-            const current = i % words.length;
-            const fullTxt = words[current];
-
-            if (isDeleting) {
-                el.textContent = fullTxt.substring(0, j - 1);
-                j--;
-            } else {
-                el.textContent = fullTxt.substring(0, j + 1);
-                j++;
-            }
-
-            let speed = isDeleting ? 40 : 80;
-            if (!isDeleting && j === fullTxt.length) {
-                speed = 2500;
-                isDeleting = true;
-            } else if (isDeleting && j === 0) {
-                isDeleting = false;
-                i++;
-                speed = 500;
-            }
-            setTimeout(type, speed);
-        };
-
-        type();
+        if (!window.matchMedia("(hover: hover)").matches) return;
+        
+        const cards = document.querySelectorAll('.spotlight-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
     }
 };
 
@@ -221,11 +195,11 @@ const SmoothMagneticElements = {
             });
 
             const animate = () => {
-                currentX = lerp(currentX, mouseX, 0.1);
-                currentY = lerp(currentY, mouseY, 0.1);
+                currentX = lerp(currentX, mouseX, 0.15);
+                currentY = lerp(currentY, mouseY, 0.15);
 
                 if (isHovering || Math.abs(currentX) > 0.1 || Math.abs(currentY) > 0.1) {
-                    magnet.style.transform = `translate(${currentX * 0.4}px, ${currentY * 0.4}px)`;
+                    magnet.style.transform = `translate(${currentX * 0.3}px, ${currentY * 0.3}px)`;
                 }
                 requestAnimationFrame(animate);
             };
@@ -257,9 +231,10 @@ const AdvancedTiltEffect = {
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
 
-                targetRotateX = ((y - centerY) / centerY) * -8;
-                targetRotateY = ((x - centerX) / centerX) * 8;
+                targetRotateX = ((y - centerY) / centerY) * -4;
+                targetRotateY = ((x - centerX) / centerX) * 4;
 
+                // Combine with Spotlight tracking if on same element
                 el.style.setProperty('--mouse-x', `${x}px`);
                 el.style.setProperty('--mouse-y', `${y}px`);
             });
@@ -274,51 +249,13 @@ const AdvancedTiltEffect = {
                 currentRotateX = lerp(currentRotateX, targetRotateX, 0.1);
                 currentRotateY = lerp(currentRotateY, targetRotateY, 0.1);
 
-                const scale = isHovering ? 1.02 : 1;
-
                 if (isHovering || Math.abs(currentRotateX) > 0.01 || Math.abs(currentRotateY) > 0.01) {
                     el.style.transform =
-                      `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) scale3d(${scale}, ${scale}, ${scale})`;
+                      `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
                 }
                 requestAnimationFrame(animate);
             };
             animate();
-        });
-    }
-};
-
-const PremiumCardInteractions = {
-    init() {
-        const cards = document.querySelectorAll('.demo-card, .project-card, .skill-card');
-        if (!cards.length) return;
-
-        cards.forEach(card => {
-            card.addEventListener('pointerdown', () => {
-                if (prefersReducedMotion()) return;
-                // small press feel
-                card.style.transform += ' scale3d(0.99,0.99,0.99)';
-                setTimeout(() => {
-                    card.style.transform = card.style.transform.replace(' scale3d(0.99,0.99,0.99)', '');
-                }, 140);
-            });
-
-            card.addEventListener('click', (e) => {
-                if (prefersReducedMotion()) return;
-                if (!(card instanceof HTMLElement)) return;
-
-                const rect = card.getBoundingClientRect();
-                const ripple = document.createElement('span');
-                ripple.className = 'ripple';
-
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-
-                card.appendChild(ripple);
-                ripple.addEventListener('animationend', () => ripple.remove());
-            }, { passive: true });
         });
     }
 };
@@ -368,36 +305,50 @@ const GSAPAnimations = {
 
         tl.to('.word-inner', {
             y: 0,
-            duration: 1.2,
-            stagger: 0.08,
-            ease: "power4.out"
+            duration: 1,
+            stagger: 0.05,
+            ease: "power3.out"
         })
         .to('.fade-in-up', {
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: 0.8,
             stagger: 0.1,
-            ease: "power3.out"
-        }, "-=0.8");
+            ease: "power2.out"
+        }, "-=0.6");
     },
 
     parallaxImages() {
-        if (prefersReducedMotion()) return;
+        if (prefersReducedMotion()) {
+            document.querySelectorAll('.img-wrapper').forEach(w => w.style.clipPath = 'polygon(0 0, 100% 0, 100% 100%, 0 100%)');
+            return;
+        }
 
         gsap.utils.toArray('.img-wrapper').forEach(wrapper => {
             const img = wrapper.querySelector('img');
             if (!img) return;
 
+            // Elite clip-path reveal
+            gsap.to(wrapper, {
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                duration: 1.2,
+                ease: "power3.inOut",
+                scrollTrigger: {
+                    trigger: wrapper,
+                    start: 'top 85%',
+                }
+            });
+
+            // Scale parallax
             gsap.fromTo(img,
-                { y: '-10%', scale: 1.1 },
+                { scale: 1.15 },
                 {
-                    y: '10%',
-                    ease: 'none',
+                    scale: 1,
+                    duration: 1.5,
+                    ease: "power2.out",
                     scrollTrigger: {
                         trigger: wrapper,
-                        start: 'top bottom',
-                        end: 'bottom top',
-                        scrub: true
+                        start: 'top 85%',
                     }
                 }
             );
@@ -409,186 +360,31 @@ const GSAPAnimations = {
 
         gsap.utils.toArray('.section-header').forEach(header => {
             gsap.fromTo(header,
-                { opacity: 0, y: 50, scale: 0.95 },
+                { opacity: 0, y: 30 },
                 {
-                    opacity: 1, y: 0, scale: 1, duration: 1, ease: "power3.out",
+                    opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
                     scrollTrigger: { trigger: header, start: "top 85%" }
                 }
             );
         });
 
-        const skillCards = document.querySelectorAll('.skill-card');
-        if (skillCards.length) {
-            gsap.fromTo(skillCards,
-                { opacity: 0, y: 100, rotationX: -15 },
-                {
-                    opacity: 1, y: 0, rotationX: 0, duration: 1, stagger: 0.15, ease: "back.out(1.2)",
-                    scrollTrigger: { trigger: '.skills-grid', start: "top 80%" }
-                }
-            );
-        }
-
-        const projectCards = document.querySelectorAll('.project-card');
-        if (projectCards.length) {
-            gsap.fromTo(projectCards,
-                { opacity: 0, y: 100 },
-                {
-                    opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: "power3.out",
-                    scrollTrigger: { trigger: '.projects-grid', start: "top 85%" }
-                }
-            );
-        }
-
-        const timeline = document.querySelectorAll('.timeline-item');
-        if (timeline.length) {
-            gsap.fromTo('.timeline-item',
-                { opacity: 0, x: -50 },
-                {
-                    opacity: 1, x: 0, duration: 0.8, stagger: 0.2, ease: "power3.out",
-                    scrollTrigger: { trigger: '.timeline-grid', start: "top 80%" }
-                }
-            );
-        }
-    }
-};
-
-const InteractiveNeuralNetwork = {
-    init() {
-        if (prefersReducedMotion()) return;
-
-        const canvas = document.getElementById('networkCanvas');
-        if (!canvas) return;
-        if (typeof THREE === 'undefined') return;
-
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x020617, 0.03);
-
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        const particlesCount = 150;
-        const posArray = new Float32Array(particlesCount * 3);
-        const colorsArray = new Float32Array(particlesCount * 3);
-        const particlesData = [];
-
-        const color1 = new THREE.Color('#3b82f6');
-        const color2 = new THREE.Color('#8b5cf6');
-
-        for (let i = 0; i < particlesCount; i++) {
-            const i3 = i * 3;
-
-            posArray[i3] = (Math.random() - 0.5) * 25;
-            posArray[i3 + 1] = (Math.random() - 0.5) * 25;
-            posArray[i3 + 2] = (Math.random() - 0.5) * 15;
-
-            const mixedColor = color1.clone().lerp(color2, Math.random());
-            colorsArray[i3] = mixedColor.r;
-            colorsArray[i3 + 1] = mixedColor.g;
-            colorsArray[i3 + 2] = mixedColor.b;
-
-            particlesData.push({
-                velocity: new THREE.Vector3(
-                    (Math.random() - 0.5) * 0.015,
-                    (Math.random() - 0.5) * 0.015,
-                    (Math.random() - 0.5) * 0.015
-                )
-            });
-        }
-
-        const particlesGeometry = new THREE.BufferGeometry();
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-        particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
-
-        const particlesMaterial = new THREE.PointsMaterial({
-            size: 0.08,
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.9,
-            blending: THREE.AdditiveBlending
-        });
-
-        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-        scene.add(particlesMesh);
-
-        const lineMaterial = new THREE.LineBasicMaterial({
-            color: 0x5b21b6,
-            transparent: true,
-            opacity: 0.1,
-            blending: THREE.AdditiveBlending
-        });
-
-        const linesGeometry = new THREE.BufferGeometry();
-        const linesMesh = new THREE.LineSegments(linesGeometry, lineMaterial);
-        scene.add(linesMesh);
-
-        camera.position.z = 8;
-
-        const mouse = new THREE.Vector2(9999, 9999);
-        const mouse3D = new THREE.Vector3();
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-            mouse3D.set(mouse.x * 12, mouse.y * 12, 0);
-        }, { passive: true });
-
-        const animate = () => {
-            requestAnimationFrame(animate);
-
-            const positions = particlesMesh.geometry.attributes.position.array;
-            const linePositions = [];
-
-            for (let i = 0; i < particlesCount; i++) {
-                const i3 = i * 3;
-                const p = new THREE.Vector3(positions[i3], positions[i3 + 1], positions[i3 + 2]);
-
-                p.add(particlesData[i].velocity);
-
-                const distToMouse = p.distanceTo(mouse3D);
-                if (distToMouse < 4) {
-                    const dir = p.clone().sub(mouse3D).normalize();
-                    p.add(dir.multiplyScalar((4 - distToMouse) * 0.02));
-                }
-
-                if (p.x < -15 || p.x > 15) particlesData[i].velocity.x *= -1;
-                if (p.y < -15 || p.y > 15) particlesData[i].velocity.y *= -1;
-                if (p.z < -10 || p.z > 10) particlesData[i].velocity.z *= -1;
-
-                positions[i3] = p.x;
-                positions[i3 + 1] = p.y;
-                positions[i3 + 2] = p.z;
-
-                for (let j = i + 1; j < particlesCount; j++) {
-                    const j3 = j * 3;
-                    const p2 = new THREE.Vector3(positions[j3], positions[j3 + 1], positions[j3 + 2]);
-                    const dist = p.distanceTo(p2);
-
-                    if (dist < 3.5) {
-                        linePositions.push(p.x, p.y, p.z, p2.x, p2.y, p2.z);
+        const revealCards = (selector) => {
+            const elements = document.querySelectorAll(selector);
+            if (elements.length) {
+                gsap.fromTo(elements,
+                    { opacity: 0, y: 40 },
+                    {
+                        opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: "power2.out",
+                        scrollTrigger: { trigger: selector, start: "top 85%" }
                     }
-                }
+                );
             }
-
-            particlesMesh.geometry.attributes.position.needsUpdate = true;
-            linesMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
-
-            camera.position.x += (mouse.x * 3 - camera.position.x) * 0.02;
-            camera.position.y += (mouse.y * 3 - camera.position.y) * 0.02;
-            camera.lookAt(scene.position);
-
-            renderer.render(scene, camera);
         };
 
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }, { passive: true });
+        revealCards('.skill-card');
+        revealCards('.project-card');
+        revealCards('.demo-card');
+        revealCards('.timeline-item');
     }
 };
 
@@ -618,7 +414,7 @@ const SmoothScroller = {
 };
 
 /* ==========================================
-   MODALS (Upgraded UX)
+   MODALS
 ========================================== */
 const ContactModal = {
     init() {
@@ -634,12 +430,10 @@ const ContactModal = {
         triggers.forEach(t => t.addEventListener('click', open));
         closeBtn?.addEventListener('click', close);
 
-        // Click outside to close
         modal.addEventListener('click', (e) => {
             if (e.target === modal) close();
         });
 
-        // Escape to close
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') close();
         });
@@ -662,8 +456,8 @@ const ProjectModal = {
                 const id = btn.dataset.project || 'Project';
                 if (content) {
                     content.innerHTML =
-                        `<h2 style="color:var(--primary); font-size: 2rem;">${id}</h2>
-                         <p style="margin-top:10px;">Detailed case study overview loading dynamically...</p>`;
+                        `<h2 style="color:var(--primary); font-size: var(--text-2xl);">${id}</h2>
+                         <p style="margin-top:10px; font-size: var(--text-sm);">Detailed case study overview loading dynamically...</p>`;
                 }
                 modal.classList.add('active');
             });
@@ -671,12 +465,10 @@ const ProjectModal = {
 
         closeBtn?.addEventListener('click', close);
 
-        // Click outside to close
         modal.addEventListener('click', (e) => {
             if (e.target === modal) close();
         });
 
-        // Escape to close
         window.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') close();
         });
