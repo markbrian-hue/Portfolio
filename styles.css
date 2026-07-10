@@ -146,7 +146,7 @@ body {
 .btn-nav:hover { background: #d4d4d4; }
 
 /* ==========================================
-   HERO SECTION (Elite Two-Column Layout - FIXED)
+   HERO SECTION (Elite Two-Column Layout)
 ========================================== */
 .hero { 
     padding: 180px 0 100px; 
@@ -160,7 +160,7 @@ body {
 .hero-flex { 
     display: flex; 
     flex-direction: row; 
-    align-items: flex-start; /* Forces alignment to the absolute top edge */
+    align-items: flex-start; /* Forces alignment to the absolute top edge on desktop */
     justify-content: space-between;
     gap: 60px;
     width: 100%;
@@ -178,7 +178,7 @@ body {
 .hero-left {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centers badges perfectly underneath the avatar */
+    align-items: center;
     gap: 20px;
     flex-shrink: 0;
 }
@@ -221,10 +221,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 12px; /* Micro-adjustment to perfectly align cap-height of H1 with top of avatar */
+    margin-top: 12px; 
 }
 
-/* Strip residual centering */
 .hero-text p, .hero-text .social-links, .hero-text .hero-btns {
     margin-left: 0;
     margin-right: 0;
@@ -240,7 +239,7 @@ body {
     letter-spacing: -0.2px; 
 }
 
-/* SOCIAL ICONS (Left Aligned) */
+/* SOCIAL ICONS */
 .social-links { display: flex; gap: 16px; justify-content: flex-start; margin-bottom: 32px; width: 100%; }
 .social-icon {
     width: 44px; height: 44px; border-radius: var(--radius-btn); display: grid; place-items: center;
@@ -252,7 +251,7 @@ body {
     transform: translateY(-2px); 
 }
 
-/* BUTTONS (Left Aligned) */
+/* BUTTONS */
 .hero-btns { display: flex; gap: 16px; justify-content: flex-start; flex-wrap: wrap; width: 100%; }
 
 .btn-primary {
@@ -333,11 +332,9 @@ body {
 .timeline-subtitle { color: var(--text-body); font-size: var(--text-sm); margin-bottom: 12px; }
 
 /* ==========================================
-   CONTACT SECTION & FORMS 
+   CONTACT SECTION & FORMS
 ========================================== */
 .contact-section { position: relative; padding: 120px 0; background: var(--bg-1); border-top: 1px solid var(--border); overflow: hidden; }
-
-/* Subtle accent glow behind the contact area */
 .contact-section::before {
     content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
     width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
@@ -350,7 +347,6 @@ body {
 .contact-info-card h2 { color: var(--primary); font-size: var(--text-2xl); margin-bottom: 12px; letter-spacing: -1px; }
 .contact-info-card p { font-size: var(--text-sm); margin-bottom: 48px; color: var(--text-body); }
 
-/* Ultra-tight flex columns */
 .contact-item { 
     display: flex; 
     gap: 16px; 
@@ -363,6 +359,7 @@ body {
     gap: 2px; 
     margin-top: 2px; 
 }
+
 .contact-icon { 
     font-size: 1.25rem; 
     color: var(--text-muted); 
@@ -391,7 +388,9 @@ body {
     text-decoration: none;
     transition: color var(--transition);
 }
-.value a:hover { color: var(--accent-core); }
+.value a:hover {
+    color: var(--accent-core);
+}
 
 .contact-socials { display: flex; gap: 16px; margin-top: 48px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 32px; }
 
@@ -467,31 +466,46 @@ footer p { font-size: var(--text-sm); color: var(--text-body); }
 .fade-in-up { opacity: 0; transform: translateY(20px); }
 
 /* ==========================================
-   RESPONSIVE LAYOUTS (Perfect Collapsing)
+   RESPONSIVE LAYOUTS (Perfect Collapsing - FIXED)
 ========================================== */
 @media (max-width: 1024px) {
     .hero { 
         padding-top: 140px; 
         min-height: auto; 
-        display: block; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
+    
     .hero-flex { 
         flex-direction: column; 
+        align-items: center; /* THIS ENSURES EVERYTHING CENTERS ON MOBILE */
+        justify-content: center;
         gap: 40px; 
         text-align: center; 
     }
+    
+    .hero-left {
+        width: 100%;
+        align-items: center;
+    }
+
     .hero-text { 
         align-items: center; 
         text-align: center; 
         margin-top: 0; 
     }
+    
     .hero-text p {
         margin-left: auto;
         margin-right: auto;
     }
+    
     .social-links, .hero-btns { 
         justify-content: center; 
     }
+    
     .hero-image { 
         width: 200px; 
         height: 200px; 
