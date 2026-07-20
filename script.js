@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Core
     MobileMenu.init();
-    ContactModal.init();
     ProjectModal.init();
     ScrollSpy.init();
 
@@ -414,32 +413,8 @@ const SmoothScroller = {
 };
 
 /* ==========================================
-   MODALS
+   MODALS (Project only)
 ========================================== */
-const ContactModal = {
-    init() {
-        const modal = document.getElementById('contactModal');
-        if (!modal) return;
-
-        const triggers = document.querySelectorAll('[data-action="contact"]');
-        const closeBtn = modal.querySelector('.modal-close');
-
-        const open = () => modal.classList.add('active');
-        const close = () => modal.classList.remove('active');
-
-        triggers.forEach(t => t.addEventListener('click', open));
-        closeBtn?.addEventListener('click', close);
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) close();
-        });
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') close();
-        });
-    }
-};
-
 const ProjectModal = {
     init() {
         const modal = document.getElementById('projectModal');
