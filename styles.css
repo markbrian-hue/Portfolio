@@ -96,9 +96,6 @@ body {
     color: var(--bg-color);
 }
 
-/* ==========================================
-   HERO SECTION
-========================================== */
 .section-grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr; /* Better balance to prevent text from dropping too low */
