@@ -1,0 +1,10 @@
+{
+  "name": "mark-brian-viloria-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "python -m http.server 4173 --bind 127.0.0.1",
+    "check": "node --check script.js && python tools/site.py",
+    "build": "npm run check && python tools/site.py build"
+  }
+}
