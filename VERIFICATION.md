@@ -32,3 +32,13 @@ Coffee Shop POS and Luxury Travel Website had no live URLs in the source; both a
 ## Limits and launch preparation
 
 This is not a comprehensive assistive-technology audit, Safari/Firefox test, or Lighthouse benchmark. No backend, analytics, or deployment was added. Testimonials and quantitative project outcomes were absent from the supplied content and were not invented. Replace the marked case-study placeholders and confirm current availability and biography before publishing; see README.md.
+
+
+## Motion update — 27 September 2026
+
+- Added staggered hero entrances, one-time section/project reveals, smooth anchor scrolling, pointer-only hover lifts, and opening/inquiry-preview transitions. Atlas37 and the user's content edits were preserved.
+- Production build and source checks pass. No dependencies added.
+- Browser verification: desktop (1440px), mobile (390px), narrow mobile (320px); no overflow or local console warnings/errors. Entrances finish at full opacity, work navigation settles below the sticky header, keyboard disclosure toggling works, inquiry preview retains the correct destination, and editing preserves input/focus. No message sent.
+- Motion behavior checks with a simulated reduced-motion preference: entrances suppressed when enabled, active entrances cancelled when enabled during playback, focused content revealed immediately. OS preference was not changed during browser testing.
+- Content has no hidden reveal classes and remains visible if animation APIs are unavailable. CSS transitions and smooth scrolling are disabled by the reduced-motion media query.
+- The earlier report's immediate-scrolling behavior is superseded by this update for visitors who have not requested reduced motion.

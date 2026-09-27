@@ -1,5 +1,9 @@
 /* Shared design tokens and reusable primitives. No framework required. */
 :root {
+  --motion-fast: 180ms;
+  --motion-standard: 280ms;
+  --motion-enter: 620ms;
+  --motion-ease-out: cubic-bezier(.22, 1, .36, 1);
   --bg:#151714;
   --surface:#1d201c;
   --surface-light:#252923;
@@ -765,3 +769,59 @@ textarea {
 
 .nav-contact { white-space: nowrap; }
 @media (max-width: 380px) { .site-nav { gap: .5rem; } }
+
+/* Motion system: small, finite movements; layout and focus remain stable. */
+a, button, input, select, textarea, summary {
+  transition: color var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .button {
+    transition: background-color var(--motion-fast) ease,
+      transform var(--motion-standard) var(--motion-ease-out),
+      box-shadow var(--motion-standard) var(--motion-ease-out);
+  }
+  .button > span[aria-hidden],
+  .text-link > span[aria-hidden],
+  .nav-contact > span[aria-hidden] {
+    transition: transform var(--motion-standard) var(--motion-ease-out);
+  }
+  summary > span {
+    transition: transform var(--motion-standard) var(--motion-ease-out);
+  }
+  .project-visual img {
+    transition: transform 500ms var(--motion-ease-out),
+      box-shadow 500ms var(--motion-ease-out);
+  }
+  .nav-links a { position: relative; }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--motion-standard) var(--motion-ease-out);
+  }
+  .nav-links a:focus-visible::after { transform: scaleX(1); }
+  /* Avoid sticky hover states on touch devices. */
+  @media (hover: hover) and (pointer: fine) {
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px #0002;
+    }
+    .button:hover > span[aria-hidden],
+    .text-link:hover > span[aria-hidden],
+    .nav-contact:hover > span[aria-hidden] { transform: translateX(3px); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .project-visual:hover img {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 30px #0003;
+    }
+  }
+  .button:active { transform: translateY(0); }
+}
